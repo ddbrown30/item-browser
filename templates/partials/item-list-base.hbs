@@ -1,0 +1,14 @@
+<tr class="item-header">
+    <th id="column-img" class="item-cell-img"></th>
+    <th id="column-name" class="item-cell-name" data-sort-id="name">{{{localize "ITEM_BROWSER.Name"}}}</th>
+</tr>
+{{#each items}}
+<tr class="item-option{{#if (and ../selectedItem (eq ../selectedItem uuid))}} selected{{/if}}" data-item-id="{{uuid}}">
+    <td class="item-cell-img">
+        <img src="{{img.display}}" alt="{{name.display}}" loading="lazy" class="item-row-img">
+    </td>
+    <td class="item-cell-name">
+        <p class="item-row-text">{{name.display}}</p>
+    </td>
+</tr>
+{{/each}}

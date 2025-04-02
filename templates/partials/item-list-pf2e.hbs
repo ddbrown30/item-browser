@@ -1,0 +1,34 @@
+<colgroup>
+    <col class="item-cell-img" />
+    <col class="item-cell-name" />
+    <col /> {{!-- This combined with the colspan="2" below lets us fake a min-width on the name column --}}
+    <col class="item-cell-attr" />
+    <col class="item-cell-pf2etraits" />
+    <col class="item-cell-dndsize" />
+</colgroup>
+<tr class="item-header">
+    <th></th>
+    <th colspan="2" data-sort-id="name">{{{localize "ITEM_BROWSER.Name"}}}</th>
+    <th data-sort-id="level">{{{localize "ITEM_BROWSER.Level"}}}</th>
+    <th>{{{localize "ITEM_BROWSER.Traits"}}}</th>
+    <th data-sort-id="size">{{{localize "ITEM_BROWSER.Size"}}}</th>
+</tr>
+{{#each items}}
+<tr class="item-option{{#if (and ../selectedItem (eq ../selectedItem uuid))}} selected{{/if}}" data-item-id="{{uuid}}" data-tooltip="{{tooltip}}">
+    <td class="item-cell-img">
+        <img src="{{img.display}}" alt="{{name.display}}" loading="lazy" class="item-row-img">
+    </td>
+    <td class="item-cell-name" colspan="2">
+        <p class="item-row-text">{{name.display}}</p>
+    </td>
+    <td class="item-cell-attr">
+        <p class="item-row-text">{{level.display}}</p>
+    </td>
+    <td class="item-cell-pf2etraits">
+        <p class="item-row-text">{{traits.display}}</p>
+    </td>
+    <td class="item-cell-dndsize">
+        <p class="item-row-text">{{size.display}}</p>
+    </td>
+</tr>
+{{/each}}
