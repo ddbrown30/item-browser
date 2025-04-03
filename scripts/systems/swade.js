@@ -7,6 +7,10 @@ export class Swade extends BaseSystem {
         return `${PATH}/templates/partials/additional-filters-swade.hbs`;
     }
 
+    getAdditionalSearchesTemplate() {
+        return `${PATH}/templates/partials/additional-searches-swade.hbs`;
+    }
+
     getItemListTemplate() {
         return `${PATH}/templates/partials/item-list-swade.hbs`;
     }
@@ -153,7 +157,12 @@ export class Swade extends BaseSystem {
 
         //Filter by type
         if (this.filters.typeFilter) {
-            filtered = filtered.filter((a) => a.type == this.filters.typeFilter);
+            filtered = filtered.filter((i) => i.type == this.filters.typeFilter);
+        }
+
+        //Filter by the search desc string
+        if (this.searchDesc) {
+            filtered = filtered.filter((i) => i.system.description.toLowerCase().includes(this.searchDesc.toLowerCase()));
         }
 
         return filtered;
@@ -268,9 +277,9 @@ export class Swade extends BaseSystem {
     setRankColumnData(system, data) {
         const ranks = ["novice", "seasoned", "veteran", "heroic", "legendary"];
         if (system.rank) {
-            let sortValue = ranks.indexOf(rank.toLowerCase());
+            let sortValue = ranks.indexOf(system.rank.toLowerCase());
             sortValue = sortValue < 0 ? Number.MAX_SAFE_INTEGER : sortValue;
-            data.rank = { display: rank, sortValue: sortValue };
+            data.rank = { display: system.rank, sortValue: sortValue };
         } else if (system.requirements) {
             let rank = system.requirements.find((r) => r.type == "rank");
             if (rank) {
@@ -413,7 +422,22 @@ export class Swade extends BaseSystem {
         };
     }
 
+    getAdditionalSearchesData(browserDialog, items) {
+        this.searchDesc = this.searchDesc ?? "";
+
+        return {
+            searchDesc: this.searchDesc,
+        };
+    }
+
     activateListeners(browserDialog) {
         super.addDropdownListener("type", "typeFilter", browserDialog);
+
+        //Add a keyup listener on the search desc input so that we can filter as we type
+        const searchDescSelector = browserDialog.element.querySelector('input.search-desc');
+        searchDescSelector.addEventListener("keyup", async event => {
+            this.searchDesc = event.target.value;
+            await browserDialog.renderItemList(event);
+        });
     }
 }

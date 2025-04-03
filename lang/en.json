@@ -1,6 +1,8 @@
 {
     "ITEM_BROWSER.ItemBrowser": "Item Browser",
     "ITEM_BROWSER.OpenItemBrowser": "Open Item Browser",
+    "ITEM_BROWSER.SearchName": "Name:",
+    "ITEM_BROWSER.SearchDescription": "Description:",
     "ITEM_BROWSER.FilterSource": "Filter Source:",
     "ITEM_BROWSER.FilterType": "Filter Type:",
     "ITEM_BROWSER.FilterEdge": "Filter Edge:",

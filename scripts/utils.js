@@ -7,7 +7,7 @@ export class Utils {
 
     /**
      * Get a single setting using the provided key
-     * @param {*} key 
+     * @param {*} key
      * @returns {Object} setting
      */
     static getSetting(key) {
@@ -16,9 +16,9 @@ export class Utils {
 
     /**
      * Sets a single game setting
-     * @param {*} key 
-     * @param {*} value 
-     * @param {*} awaitResult 
+     * @param {*} key
+     * @param {*} value
+     * @param {*} awaitResult
      * @returns {Promise | ClientSetting}
      */
     static async setSetting(key, value, awaitResult=false) {
@@ -35,8 +35,8 @@ export class Utils {
 
     /**
      * Register a single setting using the provided key and setting data
-     * @param {*} key 
-     * @param {*} metadata 
+     * @param {*} key
+     * @param {*} metadata
      * @returns {ClientSettings.register}
      */
     static registerSetting(key, metadata) {
@@ -45,8 +45,8 @@ export class Utils {
 
     /**
      * Register a menu setting using the provided key and setting data
-     * @param {*} key 
-     * @param {*} metadata 
+     * @param {*} key
+     * @param {*} metadata
      * @returns {ClientSettings.registerMenu}
      */
     static registerMenu(key, metadata) {
@@ -59,11 +59,17 @@ export class Utils {
     static async loadTemplates() {
         let listPartial = await loadTemplates([game.itemBrowser.systemHandler.getItemListTemplate()]);
         Handlebars.registerPartial("itemBrowserListPartial", listPartial[0]);
-        
+
         let filtersTemplate = game.itemBrowser.systemHandler.getAdditionalFiltersTemplate();
         if (filtersTemplate) {
             let filtersPartial = await loadTemplates([filtersTemplate]);
             Handlebars.registerPartial("itemBrowserAdditionalFiltersPartial", filtersPartial[0]);
+        }
+
+        let searchesTemplate = game.itemBrowser.systemHandler.getAdditionalSearchesTemplate();
+        if (searchesTemplate) {
+            let searchesPartial = await loadTemplates([searchesTemplate]);
+            Handlebars.registerPartial("itemBrowserAdditionalSearchesPartial", searchesPartial[0]);
         }
     }
 
@@ -71,7 +77,7 @@ export class Utils {
         const msg = `${MODULE_CONFIG.SHORT_TITLE} | ${message}`;
         return ui.notifications[type](msg, options);
     }
-    
+
     static consoleMessage(type, {objects=[], message="", subStr=[]}) {
         const msg = `${MODULE_CONFIG.TITLE} | ${message}`;
         const params = [];

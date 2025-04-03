@@ -98,31 +98,33 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
             }
         }
 
-        this.search = this.search ?? "";
+        let additionalFiltersData = this.systemHandler.getAdditionalFiltersData(this, items);
+        let additionalSearchesData = this.systemHandler.getAdditionalSearchesData(this, items);
+
+        const headerData = this.systemHandler.getHeaderData();
+
+        this.searchName = this.searchName ?? "";
         this.sortColumn = this.sortColumn ?? "name";
         this.sortOrder = this.sortOrder ?? 1;
 
-
-        let additionalFiltersData = this.systemHandler.getAdditionalFiltersData(this, items);
+        if (!headerData[this.sortColumn]) this.sortColumn = "name"; //Reset the sort column if we no longer have that column
 
         let filteredItems = this.filterItems(items);
         this.rowData = this.systemHandler.buildRowData(filteredItems);
+        this.rowData = this.filterRows(this.rowData);
         this.rowData = this.sortRows(this.rowData, this.sortColumn, this.sortOrder);
 
-        //Filter the final rows in a transient variable so that we can refilter without requiring a render call
-        let filteredRows = this.filterRows(this.rowData);
-
         let selectButtonString = this.getSelectButtonString();
-        const headerData = this.systemHandler.getHeaderData();
 
         return {
             sources: sources,
             sourceFilter: this.sourceFilter,
-            search: this.search,
-            items: filteredRows,
+            searchName: this.searchName,
+            items: this.rowData,
             selectedItem: this.selectedItem,
             selectButtonString: selectButtonString,
             additionalFiltersData: additionalFiltersData,
+            additionalSearchesData: additionalSearchesData,
             headerData: headerData,
         };
     };
@@ -139,15 +141,11 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
     }
 
     async renderItemList(event) {
-        let filteredRows = this.filterRows(this.rowData);
-        let data = {
-            items: filteredRows,
-            selectedItem: this.selectedItem,
-        };
+        let data = await this._prepareContext();
 
         //Re-render just the item list with the newly filtered list and replace the html
         const content = await renderTemplate(this.systemHandler.getItemListTemplate(), data);
-        let optionsBox = event.target.closest(".search-panel");
+        let optionsBox = this.element.querySelector(".list-panel");
         let itemList = optionsBox.querySelector(".item-list");
         itemList.innerHTML = content;
 
@@ -156,10 +154,10 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
     }
 
     activateListeners() {
-        //Add a keyup listener on the search input so that we can filter as we type
-        const searchSelector = this.element.querySelector('input.search');
-        searchSelector.addEventListener("keyup", async event => {
-            this.search = event.target.value;
+        //Add a keyup listener on the search name input so that we can filter as we type
+        const searchNameSelector = this.element.querySelector('input.search-name');
+        searchNameSelector.addEventListener("keyup", async event => {
+            this.searchName = event.target.value;
             await this.renderItemList(event);
         });
 
@@ -191,7 +189,7 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
                         this.sortOrder = 1;
                     }
                     this.sortColumn = columnName;
-                    this.render();
+                    await this.renderItemList(event);
                 });
             }
         }
@@ -307,9 +305,9 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
     filterRows(rowData) {
         let filtered = rowData;
 
-        //Filter by the search string
-        if (this.search) {
-            filtered = filtered.filter((r) => r.name.display.toLowerCase().includes(this.search.toLowerCase()));
+        //Filter by the search name string
+        if (this.searchName) {
+            filtered = filtered.filter((r) => r.name.display.toLowerCase().includes(this.searchName.toLowerCase()));
         }
 
         //If our selected item does not exist in our filtered list, deselect it
