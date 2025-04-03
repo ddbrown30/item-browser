@@ -6,12 +6,18 @@
                 {{selectOptions sources selected=sourceFilter localize=true valueAttr="id" labelAttr="label"}}
             </select>
         </div>
+        <div class="type-filter filter-row">
+            <label for="type-filter">{{{localize "ITEM_BROWSER.FilterType"}}}</label>
+            <select id="type-filter" name="type-filter" type="dropdown" placeholder="Filter Type...">
+                {{selectOptions typeFilterOptions selected=typeFilter localize=true valueAttr="id" labelAttr="label"}}
+            </select>
+        </div>
         {{#> itemBrowserAdditionalFiltersPartial additionalFiltersData=additionalFiltersData}}{{/itemBrowserAdditionalFiltersPartial}}
     </div>
     <div class="list-panel">
         <div class="search-input">
             <div class="search-row">
-                <label >{{{localize "ITEM_BROWSER.SearchName"}}}</label>
+                <label>{{{localize "ITEM_BROWSER.SearchName"}}}</label>
                 <input type="text" class="search-name" value="{{searchName}}">
             </div>
             {{#> itemBrowserAdditionalSearchesPartial additionalSearchesData=additionalSearchesData}}{{/itemBrowserAdditionalSearchesPartial}}

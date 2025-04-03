@@ -3,21 +3,12 @@ import { PATH } from "../module-config.js";
 
 export class BaseSystem {
 
-    getAdditionalFiltersTemplate() {
-        return "";
-    }
-
-    getItemListTemplate() {
-        return `${PATH}/templates/partials/item-list-base.hbs`;
-    }
-
-    getIndexFields() {
-        return [];
-    }
-
-    getItemTypes() {
-        return [];
-    }
+    static ITEM_LIST_TEMPLATE = `${PATH}/templates/partials/item-list-base.hbs`;
+    static ADDITIONAL_FILTERS_TEMPLATE = "";
+    static ADDITIONAL_SEARCHES_TEMPLATE = "";
+    static INDEX_FIELDS = [];
+    static ITEM_TYPES = [];
+    static HEADER_CONFIG = {};
 
     filterItems(items) {
         return items;
@@ -34,7 +25,6 @@ export class BaseSystem {
     }
 
     buildCommonRowData(item) {
-        let typeLabel = game.i18n.localize(CONFIG.Item.typeLabels[item.type]);
         let data = {
             uuid: item.uuid,
             tooltip: this.getTooltip(item),

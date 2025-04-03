@@ -44,7 +44,7 @@ A system requires two new files with an optional third. The first is the system 
 - `getIndexFields - Optional` This is a list of additional field to request when getting the index from the compendiums. This allows you to grab additional stats for the item without having to fully load the document (which is slow, especially when you have a lot of items).
 - `getItemTypes - Optional` This is the list of supported item types. If you want to support all item types for your system, you do not need to override this function.
 - `filterItems - Optional` This allows you to do additional filtering which is covered more later.
-- `getAdditionalFiltersTemplate - Optional` This returns the name of the .hbs file that we will use when rendering the additional filters. Check out `additional-filters-swade.hbs` for an example.
+- `ADDITIONAL_FILTERS_TEMPLATE - Optional` This returns the name of the .hbs file that we will use when rendering the additional filters. Check out `additional-filters-swade.hbs` for an example.
 - `getAdditionalFiltersData - Optional` If using additional filters, this is where you can prepare data to be used when rendering.
 - `activateListeners - Optional` This allows you to activate html listeners on any elements in the dialog. This is mainly used for hooking into elements in the additional filters but could be used for other elements.
 

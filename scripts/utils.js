@@ -57,16 +57,16 @@ export class Utils {
      * Loads templates for partials
      */
     static async loadTemplates() {
-        let listPartial = await loadTemplates([game.itemBrowser.systemHandler.getItemListTemplate()]);
+        let listPartial = await loadTemplates([game.itemBrowser.systemHandler.constructor.ITEM_LIST_TEMPLATE]);
         Handlebars.registerPartial("itemBrowserListPartial", listPartial[0]);
 
-        let filtersTemplate = game.itemBrowser.systemHandler.getAdditionalFiltersTemplate();
+        let filtersTemplate = game.itemBrowser.systemHandler.constructor.ADDITIONAL_FILTERS_TEMPLATE;
         if (filtersTemplate) {
             let filtersPartial = await loadTemplates([filtersTemplate]);
             Handlebars.registerPartial("itemBrowserAdditionalFiltersPartial", filtersPartial[0]);
         }
 
-        let searchesTemplate = game.itemBrowser.systemHandler.getAdditionalSearchesTemplate();
+        let searchesTemplate = game.itemBrowser.systemHandler.constructor.ADDITIONAL_SEARCHES_TEMPLATE;
         if (searchesTemplate) {
             let searchesPartial = await loadTemplates([searchesTemplate]);
             Handlebars.registerPartial("itemBrowserAdditionalSearchesPartial", searchesPartial[0]);

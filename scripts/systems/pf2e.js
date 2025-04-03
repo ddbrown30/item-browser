@@ -3,24 +3,13 @@ import { BaseSystem } from "./base-system.js";
 
 export class PF2e extends BaseSystem {
 
-    getItemListTemplate() {
-        return `${PATH}/templates/partials/item-list-pf2e.hbs`;
-    }
-
-    getIndexFields() {
-        return [
-            "system.details",
-            "system.traits",
-        ];
-    }
-
-    getItemTypes() {
-        return ["character", "npc"];
-    }
+    static ITEM_LIST_TEMPLATE = `${PATH}/templates/partials/item-list-pf2e.hbs`;
+    static INDEX_FIELDS = ["system"];
+    static ITEM_TYPES = [];//["armor", "consumable", "edge", "gear", "hindrance", "power", "shield", "skill", "weapon"];
 
     buildRowData(items) {
         let rowData = [];
-        
+
         for (const item of items) {
             let level =  item.system.details.level.value ?? 0;
             let data = {
@@ -46,7 +35,7 @@ export class PF2e extends BaseSystem {
 
         return { display, sortValue };
     }
-     
+
     getTraitColumnData(traits) {
         let display = "";
         if (traits) {
@@ -60,7 +49,7 @@ export class PF2e extends BaseSystem {
                 display += traitString;
             }
         }
-        
+
         if (!display) {
             display = game.i18n.localize("ITEM_BROWSER.None");
         }

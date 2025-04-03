@@ -100,8 +100,9 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
 
         let additionalFiltersData = this.systemHandler.getAdditionalFiltersData(this, items);
         let additionalSearchesData = this.systemHandler.getAdditionalSearchesData(this, items);
+        let typeFilterOptions = this.getTypeFilterOptions(items, this.systemHandler.constructor.ITEM_TYPES);
 
-        const headerData = this.systemHandler.getHeaderData();
+        const headerData = this.getHeaderData();
 
         this.searchName = this.searchName ?? "";
         this.sortColumn = this.sortColumn ?? "name";
@@ -110,7 +111,7 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
         if (!headerData[this.sortColumn]) this.sortColumn = "name"; //Reset the sort column if we no longer have that column
 
         let filteredItems = this.filterItems(items);
-        this.rowData = this.systemHandler.buildRowData(filteredItems);
+        this.rowData = this.systemHandler.buildRowData(filteredItems, this.typeFilter, headerData);
         this.rowData = this.filterRows(this.rowData);
         this.rowData = this.sortRows(this.rowData, this.sortColumn, this.sortOrder);
 
@@ -119,6 +120,7 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
         return {
             sources: sources,
             sourceFilter: this.sourceFilter,
+            typeFilter: this.typeFilter,
             searchName: this.searchName,
             items: this.rowData,
             selectedItem: this.selectedItem,
@@ -126,6 +128,7 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
             additionalFiltersData: additionalFiltersData,
             additionalSearchesData: additionalSearchesData,
             headerData: headerData,
+            typeFilterOptions: typeFilterOptions,
         };
     };
 
@@ -144,7 +147,7 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
         let data = await this._prepareContext();
 
         //Re-render just the item list with the newly filtered list and replace the html
-        const content = await renderTemplate(this.systemHandler.getItemListTemplate(), data);
+        const content = await renderTemplate(this.systemHandler.constructor.ITEM_LIST_TEMPLATE, data);
         let optionsBox = this.element.querySelector(".list-panel");
         let itemList = optionsBox.querySelector(".item-list");
         itemList.innerHTML = content;
@@ -158,7 +161,7 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
         const searchNameSelector = this.element.querySelector('input.search-name');
         searchNameSelector.addEventListener("keyup", async event => {
             this.searchName = event.target.value;
-            await this.renderItemList(event);
+            this.renderItemList(event);
         });
 
         //Add the listener to the source dropdown
@@ -166,7 +169,14 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
         filterSelector.addEventListener("change", event => {
             const selection = $(event.target).find("option:selected");
             this.sourceFilter = selection.val();
-            this.render();
+            this.renderItemList(event);
+        });
+
+        const typeSelector = this.element.querySelector('select[id="type-filter"]');
+        typeSelector.addEventListener("change", event => {
+            const selection = $(event.target).find("option:selected");
+            this.typeFilter = selection.val();
+            this.renderItemList(event);
         });
 
         this.activateTableListeners(this.element);
@@ -236,7 +246,7 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
             if (pack.documentName != "Item") continue;
             if (!pack.testUserPermission(game.user, "OBSERVER")) continue;
 
-            let packIndex = await pack.getIndex({ fields: this.systemHandler.getIndexFields() });
+            let packIndex = await pack.getIndex({ fields: this.systemHandler.constructor.INDEX_FIELDS });
             if (packIndex.size == 0) continue;
 
             packIndex = this.filterItemsByType(packIndex);
@@ -266,18 +276,50 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
         return items;
     }
 
+    getTypeFilterOptions(items, types) {
+        let itemTypes = [];
+        for (let type of types) {
+            if (items.find((i) => i.type == type)) itemTypes.push({ id: type, label: `ITEM_BROWSER.TypeFilters.${type}` });
+        }
+
+        itemTypes = itemTypes.sort((a, b) => a.label.localeCompare(b.label));
+
+        if (itemTypes.length == 0) {
+            itemTypes.push({ id: "", label: `ITEM_BROWSER.TypeFilters.NoItems` });
+        }
+
+        this.typeFilter = this.typeFilter ?? itemTypes[itemTypes.length - 1].id;
+        return itemTypes;
+    }
+
+    getHeaderData() {
+        const headerConfig = this.systemHandler.constructor.HEADER_CONFIG;
+        let columns = this.systemHandler.getColumnsForType(this.typeFilter);
+
+        let headerData = {};
+        for (let column of columns) {
+            headerData[column] = headerConfig[column];
+        }
+        return headerData;
+    }
+
     filterItemsByType(items) {
         let filtered = items;
 
         //Remove invalid item types
-        const itemTypes = this.systemHandler.getItemTypes();
+        const itemTypes = this.systemHandler.constructor.ITEM_TYPES;
         if (itemTypes.length) {
-            filtered = filtered.filter((a) => itemTypes.includes(a.type));
+            filtered = filtered.filter((i) => itemTypes.includes(i.type));
+        }
+
+        //Filter by type
+        if (this.typeFilter) {
+            filtered = filtered.filter((i) => i.type == this.typeFilter);
         }
 
         //If the dialog has limited the available types, remove them here
         if (this.options.itemTypes?.length) {
-            filtered = filtered.filter((a) => this.options.itemTypes.includes(a.type));
+            filtered = filtered.filter((i) => this.options.itemTypes.includes(i.type));
         }
 
         return filtered;

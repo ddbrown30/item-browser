@@ -3,25 +3,10 @@ import { BaseSystem } from "./base-system.js";
 
 export class DnD5e extends BaseSystem {
 
-    getAdditionalFiltersTemplate() {
-        return `${PATH}/templates/partials/additional-filters-dnd5e.hbs`;
-    }
-
-    getItemListTemplate() {
-        return `${PATH}/templates/partials/item-list-dnd5e.hbs`;
-    }
-
-    getIndexFields() {
-        return [
-            "system.details",
-            "system.traits",
-            "system.attributes",
-        ];
-    }
-
-    getItemTypes() {
-        return ["character", "npc"];
-    }
+    static ITEM_LIST_TEMPLATE = `${PATH}/templates/partials/item-list-dnd5e.hbs`;
+    static ADDITIONAL_FILTERS_TEMPLATE = `${PATH}/templates/partials/additional-filters-dnd5e.hbs`;
+    static INDEX_FIELDS = ["system"];
+    static ITEM_TYPES = [];//["armor", "consumable", "edge", "gear", "hindrance", "power", "shield", "skill", "weapon"];
 
     filterItems(items) {
         let filtered = super.filterItems(items);
@@ -41,7 +26,7 @@ export class DnD5e extends BaseSystem {
 
     buildRowData(items) {
         let rowData = [];
-        
+
         for (const item of items) {
             let cr =  item.system.details.cr ?? item.system.details.level ?? 0;
             let data = {
@@ -88,7 +73,7 @@ export class DnD5e extends BaseSystem {
             }
             display += CONFIG.DND5E.movementTypes[type] + " " + value;
         }
-        
+
         if (!display) {
             display = game.i18n.localize("ITEM_BROWSER.None");
         }
@@ -106,7 +91,7 @@ export class DnD5e extends BaseSystem {
             }
             display += CONFIG.DND5E.senses[type] + " " + value;
         }
-        
+
         if (!display) {
             display = game.i18n.localize("ITEM_BROWSER.None");
         }
@@ -120,7 +105,7 @@ export class DnD5e extends BaseSystem {
         for (let [type, value] of Object.entries(CONFIG.DND5E.movementTypes)) {
             speeds.push({ id: type, label: value });
         }
-        
+
         let senses = [];
         senses.push({ id: "", label: game.i18n.localize("ITEM_BROWSER.FilterAllSenses") });
         for (let [type, value] of Object.entries(CONFIG.DND5E.senses)) {
