@@ -34,7 +34,7 @@
     "ITEM_BROWSER.Select": "Select",
     "ITEM_BROWSER.Open": "Open",
     "ITEM_BROWSER.Close": "Close",
-    
+
     "ITEM_BROWSER.Name": "Name",
     "ITEM_BROWSER.Type": "Type",
     "ITEM_BROWSER.Category": "Category",
@@ -47,14 +47,25 @@
     "ITEM_BROWSER.Parry": "Parry",
     "ITEM_BROWSER.ROF": "ROF",
     "ITEM_BROWSER.MinStr": "Min Str",
-    
+    "ITEM_BROWSER.TraitMod": "Trait Mod",
+    "ITEM_BROWSER.DmgMod": "Dmg Mod",
+    "ITEM_BROWSER.Heavy": "Heavy",
+    "ITEM_BROWSER.Armor": "Armor",
+    "ITEM_BROWSER.Toughness": "Tough",
+    "ITEM_BROWSER.Locations": "Locations",
+    "ITEM_BROWSER.Cover": "Cover",
+    "ITEM_BROWSER.Rank": "Rank",
+    "ITEM_BROWSER.PP": "PP",
+    "ITEM_BROWSER.Duration": "Duration",
+    "ITEM_BROWSER.Requirements": "Requirements",
+
     "ITEM_BROWSER.None": "None",
-    
+
     "ITEM_BROWSER.WaitError": "Item Browser was used as a selector but the requester did not wait for the results.",
-    
+
     "ITEM_BROWSER.Settings.ShowOnItemDirectoryN": "Show on Items Tab",
     "ITEM_BROWSER.Settings.ShowOnItemDirectoryH": "If enabled, a button to open the Item Browser will be added to the Items tab",
-    
+
     "ITEM_BROWSER.Settings.UseSmallButtonN": "Use Small Button",
     "ITEM_BROWSER.Settings.UseSmallButtonH": "If enabled, the button on the Items tab is small and placed in the same row as the search field"
 }

@@ -6,6 +6,7 @@ export const SHORT_TITLE = "IB";
 export const PATH = "modules/item-browser";
 
 export const CONST = {
+    unusedValue: { display: "-", sortValue: Number.MAX_SAFE_INTEGER },
 }
 
 export const DEFAULT_CONFIG = {

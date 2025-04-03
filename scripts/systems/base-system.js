@@ -7,7 +7,7 @@ export class BaseSystem {
         return "";
     }
 
-    getItemListTemplate() {        
+    getItemListTemplate() {
         return `${PATH}/templates/partials/item-list-base.hbs`;
     }
 
@@ -19,7 +19,7 @@ export class BaseSystem {
         return [];
     }
 
-    filterItems(items) {        
+    filterItems(items) {
         return items;
     }
 
@@ -38,9 +38,8 @@ export class BaseSystem {
         let data = {
             uuid: item.uuid,
             tooltip: this.getTooltip(item),
-            img: { display: item.img, sortValue: undefined},
-            name: { display: item.name, sortValue: item.name},
-            type: { display: typeLabel, sortValue: typeLabel },
+            img: { display: item.img, sortValue: undefined },
+            name: { display: item.name, sortValue: item.name },
         };
 
         return data;
@@ -64,13 +63,13 @@ export class BaseSystem {
         if (folder) {
             do {
                 path = folder.name + "/" + path;
-            } while(folder = folder.folder);
+            } while (folder = folder.folder);
         }
 
         path = "World/" + path;
         return path;
     }
-    
+
     getAdditionalFiltersData(browserDialog, items) {
         return {};
     }
@@ -89,6 +88,6 @@ export class BaseSystem {
     }
 
     onOpenBrowser() {
-        this.filters = {}; 
+        this.filters = {};
     }
-} 
+}

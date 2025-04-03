@@ -1,123 +1,26 @@
 <colgroup>
     <col class="item-cell-img" />
-    <col class="item-cell-type" />
     <col class="item-cell-name" />
     <col /> {{!-- This combined with the colspan="2" below lets us fake a min-width on the name column --}}
-    {{#if usedFields.damage}}
-    <col class="item-cell-damage" />{{!-- Damage --}}
-    {{/if}}
-    {{#if usedFields.ap}}
-    <col class="item-cell-attr" />{{!-- AP --}}
-    {{/if}}
-    {{#if usedFields.range}}
-    <col class="item-cell-range" />{{!-- Range --}}
-    {{/if}}
-    {{#if usedFields.shots}}
-    <col class="item-cell-attr" />{{!-- Shots --}}
-    {{/if}}
-    {{#if usedFields.parry}}
-    <col class="item-cell-attr" />{{!-- Parry --}}
-    {{/if}}
-    {{#if usedFields.rof}}
-    <col class="item-cell-attr" />{{!-- ROF --}}
-    {{/if}}
-    {{#if usedFields.minStr}}
-    <col class="item-cell-attr" />{{!-- Min Str --}}
-    {{/if}}
-    {{#if usedFields.price}}
-    <col class="item-cell-price" />{{!-- Price --}}
-    {{/if}}
-    {{#if usedFields.weight}}
-    <col class="item-cell-weight" />{{!-- Weight --}}
-    {{/if}}
+    {{#each headerData}}
+    <col class="{{class}}" />
+    {{/each}}
 </colgroup>
 <tr class="item-header">
     <th></th>
-    <th data-sort-id="type">{{{localize "ITEM_BROWSER.Type"}}}</th>
-    <th colspan="2" data-sort-id="name">{{{localize "ITEM_BROWSER.Name"}}}</th>
-    {{#if usedFields.damage}}
-    <th data-sort-id="damage">{{{localize "ITEM_BROWSER.Damage"}}}</th>
-    {{/if}}
-    {{#if usedFields.ap}}
-    <th data-sort-id="ap">{{{localize "ITEM_BROWSER.AP"}}}</th>
-    {{/if}}
-    {{#if usedFields.range}}
-    <th data-sort-id="range">{{{localize "ITEM_BROWSER.Range"}}}</th>
-    {{/if}}
-    {{#if usedFields.shots}}
-    <th data-sort-id="shots">{{{localize "ITEM_BROWSER.Shots"}}}</th>
-    {{/if}}
-    {{#if usedFields.parry}}
-    <th data-sort-id="parry">{{{localize "ITEM_BROWSER.Parry"}}}</th>
-    {{/if}}
-    {{#if usedFields.rof}}
-    <th data-sort-id="rof">{{{localize "ITEM_BROWSER.ROF"}}}</th>
-    {{/if}}
-    {{#if usedFields.minStr}}
-    <th data-sort-id="minStr">{{{localize "ITEM_BROWSER.MinStr"}}}</th>
-    {{/if}}
-    {{#if usedFields.price}}
-    <th data-sort-id="price">{{{localize "ITEM_BROWSER.Cost"}}}</th>
-    {{/if}}
-    {{#if usedFields.weight}}
-    <th data-sort-id="weight">{{{localize "ITEM_BROWSER.Weight"}}}</th>
-    {{/if}}
+    <th colspan="2" data-sort-id="name" style="text-align: start;">{{{localize "ITEM_BROWSER.Name"}}}</th>
+    {{#each headerData}}
+    <th {{{sort}}}>{{{localize label}}}</th>
+    {{/each}}
 </tr>
 {{#each items}}
 <tr class="item-option{{#if (and ../selectedItem (eq ../selectedItem uuid))}} selected{{/if}}" data-item-id="{{uuid}}" data-tooltip="{{tooltip}}">
     <td class="item-cell-img">
         <img src="{{img.display}}" alt="{{name.display}}" loading="lazy" class="item-row-img">
     </td>
-    <td class="item-cell-type">
-        <p class="item-row-text">{{type.display}}</p>
-    </td>
     <td class="item-cell-name" colspan="2">
         <p class="item-row-text">{{name.display}}</p>
     </td>
-    {{#if ../usedFields.damage}}
-    <td class="item-cell-damage">
-        <p class="item-row-text">{{damage.display}}</p>
-    </td>
-    {{/if}}
-    {{#if ../usedFields.ap}}
-    <td class="item-cell-attr">
-        <p class="item-row-text">{{ap.display}}</p>
-    </td>
-    {{/if}}
-    {{#if ../usedFields.range}}
-    <td class="item-cell-range">
-        <p class="item-row-text">{{range.display}}</p>
-    </td>
-    {{/if}}
-    {{#if ../usedFields.shots}}
-    <td class="item-cell-attr">
-        <p class="item-row-text">{{shots.display}}</p>
-    </td>
-    {{/if}}
-    {{#if ../usedFields.parry}}
-    <td class="item-cell-attr">
-        <p class="item-row-text">{{parry.display}}</p>
-    </td>
-    {{/if}}
-    {{#if ../usedFields.rof}}
-    <td class="item-cell-attr">
-        <p class="item-row-text">{{rof.display}}</p>
-    </td>
-    {{/if}}
-    {{#if ../usedFields.minStr}}
-    <td class="item-cell-attr">
-        <p class="item-row-text">{{minStr.display}}</p>
-    </td>
-    {{/if}}
-    {{#if ../usedFields.price}}
-    <td class="item-cell-price">
-        <p class="item-row-text">{{price.display}}</p>
-    </td>
-    {{/if}}
-    {{#if ../usedFields.weight}}
-    <td class="item-cell-weight">
-        <p class="item-row-text">{{weight.display}}</p>
-    </td>
-    {{/if}}
+    {{{rowHtml}}}
 </tr>
 {{/each}}

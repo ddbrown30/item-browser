@@ -33,7 +33,7 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
             Utils.showNotification("error", "validFilterSources was not an array");
             delete options.validFilterSources;
         }
-        
+
         super(options);
 
         this.dragDrop = new DragDrop({
@@ -88,7 +88,7 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
                 //We will only use the filtered sources if there is at least one valid source
                 sources = filteredSources;
             }
-        } 
+        }
 
         if (!this.sourceFilter) {
             if (this.options.initialSourceFilter) {
@@ -102,17 +102,18 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
         this.sortColumn = this.sortColumn ?? "name";
         this.sortOrder = this.sortOrder ?? 1;
 
-        let usedFields;
+
+        let additionalFiltersData = this.systemHandler.getAdditionalFiltersData(this, items);
+
         let filteredItems = this.filterItems(items);
-        [this.rowData, usedFields] = this.systemHandler.buildRowData(filteredItems);
+        this.rowData = this.systemHandler.buildRowData(filteredItems);
         this.rowData = this.sortRows(this.rowData, this.sortColumn, this.sortOrder);
 
         //Filter the final rows in a transient variable so that we can refilter without requiring a render call
         let filteredRows = this.filterRows(this.rowData);
 
         let selectButtonString = this.getSelectButtonString();
-        
-        let additionalFiltersData = this.systemHandler.getAdditionalFiltersData(this, items);
+        const headerData = this.systemHandler.getHeaderData();
 
         return {
             sources: sources,
@@ -122,7 +123,7 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
             selectedItem: this.selectedItem,
             selectButtonString: selectButtonString,
             additionalFiltersData: additionalFiltersData,
-            usedFields: usedFields,
+            headerData: headerData,
         };
     };
 
@@ -202,7 +203,7 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
 
             row.addEventListener("click", async event => {
                 this.selectedItem = row.dataset.itemId;
-                
+
                 //Loop over the rows and add/remove the selected class as needed
                 for (let r of rows) {
                     if (!r.dataset?.itemId) continue;
@@ -226,7 +227,7 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
                 this.select();
             });
         }
-        
+
         this.dragDrop.bind(this.element);
     }
 
@@ -269,7 +270,7 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
 
     filterItemsByType(items) {
         let filtered = items;
-        
+
         //Remove invalid item types
         const itemTypes = this.systemHandler.getItemTypes();
         if (itemTypes.length) {
@@ -280,7 +281,7 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
         if (this.options.itemTypes?.length) {
             filtered = filtered.filter((a) => this.options.itemTypes.includes(a.type));
         }
-        
+
         return filtered;
     }
 
@@ -323,7 +324,17 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
         let retVal = rows.sort(function (a, b) {
             const sortA = a[sortColumn];
             const sortB = b[sortColumn];
-            if (typeof sortA.sortValue == "string") {
+            if (sortA.display == sortB.display) return 0;
+
+            if (sortA.sortValue == Number.MAX_SAFE_INTEGER && sortB.sortValue == Number.MAX_SAFE_INTEGER) {
+                //If these are both max int it means they're both "invalid" values but they may be different
+                //In this case, do a string compare of their display value as a tie breaker but always treat "-" as higher so it gets pushed to the bottom of the list
+                if (sortA.display == "-") return sortOrder;
+                if (sortB.display == "-") return -1 * sortOrder;
+                return sortA.display.localeCompare(sortB.display) * sortOrder;
+            }
+
+            if (typeof sortA.sortValue == "string" && typeof sortB.sortValue == "string") {
                 return sortA.sortValue.localeCompare(sortB.sortValue) * sortOrder;
             } else {
                 return (sortA.sortValue - sortB.sortValue) * sortOrder;
