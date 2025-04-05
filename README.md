@@ -6,7 +6,7 @@ The browser shows a summary of information for each item and the list can be fil
 
 Selecting an item opens its item sheet and the browser supports drag and drop.
 
-The browser will work for all systems but has specific support for swade, dnd5e, and pf2e. If you are interested in adding support for a new system, check out the guide below.
+The browser will work for all systems but has specific support for swade and dnd5e. If you are interested in adding support for a new system, check out the guide below.
 
 <img src="https://github.com/ddbrown30/item-browser/blob/main/item_browser.webp" width="700">
 

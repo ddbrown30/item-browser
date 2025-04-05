@@ -26,12 +26,14 @@ export class BaseSystem {
         return rowData;
     }
 
-    async buildRowData(items) {
+    async buildRowData(items, type, headerData) {
         let rowData = [];
         for (const item of items) {
             let data = this.buildCommonRowData(item);
             rowData.push(data);
         }
+
+        this.buildRowHtml(type, rowData, headerData);
 
         return rowData;
     }
