@@ -1,4 +1,4 @@
-import { CONST, PATH } from "../module-config.js";
+import { PATH } from "../module-config.js";
 import { BaseSystem } from "./base-system.js";
 
 export class Swade extends BaseSystem {
@@ -135,15 +135,6 @@ export class Swade extends BaseSystem {
         return filtered;
     }
 
-    getDefaultRowData(type) {
-        let columns = this.getColumnsForType(type);
-        let rowData = {};
-        for (let column of columns) {
-            rowData[column] = CONST.unusedValue;
-        }
-        return rowData;
-    }
-
     async buildRowData(items, type, headerData) {
         let rowData = [];
         for (const item of items) {
@@ -178,25 +169,9 @@ export class Swade extends BaseSystem {
             rowData.push(data);
         }
 
-        let columns = this.getColumnsForType(type);
-        for (let row of rowData) {
-            row.rowHtml = this.getRowHtml(row, columns, headerData);
-        }
+        this.buildRowHtml(type, rowData, headerData);
 
         return rowData;
-    }
-
-    getRowHtml(rowData, columns, headerData) {
-        let rowHtml = "";
-        for (let [prop, val] of Object.entries(headerData)) {
-            if (!columns.includes(prop)) continue;
-            rowHtml += `
-            <td class="${val.class}">
-                <p class="item-row-text">${rowData[prop].display}</p>
-            </td>
-            `;
-        }
-        return rowHtml;
     }
 
     setObjectColumnData(obj, prop, data, ignoreZero) {

@@ -1,4 +1,4 @@
-import { PATH } from "../module-config.js";
+import { CONST, PATH } from "../module-config.js";
 
 
 export class BaseSystem {
@@ -15,6 +15,15 @@ export class BaseSystem {
 
     filterItems(items) {
         return items;
+    }
+
+    getDefaultRowData(type) {
+        let columns = this.getColumnsForType(type);
+        let rowData = {};
+        for (let column of columns) {
+            rowData[column] = CONST.unusedValue;
+        }
+        return rowData;
     }
 
     async buildRowData(items) {
@@ -36,6 +45,29 @@ export class BaseSystem {
         };
 
         return data;
+    }
+
+    buildRowHtml(type, rowData, headerData) {
+        let columns = this.getColumnsForType(type);
+        for (let row of rowData) {
+            row.rowHtml = this.getRowHtml(row, columns, headerData);
+        }
+    }
+
+    getRowHtml(rowData, columns, headerData) {
+        let rowHtml = "";
+        for (let [prop, val] of Object.entries(headerData)) {
+            if (!columns.includes(prop)) continue;
+            if (!rowData[prop]) {
+                console.log("asda");
+            }
+            rowHtml += `
+            <td class="${val.class}">
+                <p class="item-row-text">${rowData[prop].display}</p>
+            </td>
+            `;
+        }
+        return rowHtml;
     }
 
     getTooltip(item) {
@@ -77,12 +109,14 @@ export class BaseSystem {
     addDropdownListener(type, filterProperty, browserDialog) {
         let selectorString = 'select[id="' + type + '-filter"]';
         const selector = browserDialog.element.querySelector(selectorString);
-        selector.addEventListener("change", async event => {
-            const selection = $(event.target).find("option:selected");
-            this.filters[filterProperty] = selection.val();
-            let data = await browserDialog._prepareContext();
-            browserDialog.renderItemList(data);
-        });
+        if (selector) {
+            selector.addEventListener("change", async event => {
+                const selection = $(event.target).find("option:selected");
+                this.filters[filterProperty] = selection.val();
+                let data = await browserDialog._prepareContext();
+                browserDialog.renderItemList(data);
+            });
+        }
     }
 
     clearFilters() {

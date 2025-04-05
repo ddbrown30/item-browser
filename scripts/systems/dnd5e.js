@@ -1,4 +1,4 @@
-import { CONST, PATH } from "../module-config.js";
+import { PATH } from "../module-config.js";
 import { Utils } from "../utils.js";
 import { BaseSystem } from "./base-system.js";
 
@@ -127,15 +127,6 @@ export class DnD5e extends BaseSystem {
         return filtered;
     }
 
-    getDefaultRowData(type) {
-        let columns = this.getColumnsForType(type);
-        let rowData = {};
-        for (let column of columns) {
-            rowData[column] = CONST.unusedValue;
-        }
-        return rowData;
-    }
-
     async buildRowData(items, type, headerData) {
         let rowData = [];
         for (const item of items) {
@@ -169,19 +160,9 @@ export class DnD5e extends BaseSystem {
             rowData.push(data);
         }
 
-        let columns = this.getColumnsForType(type);
-        for (let row of rowData) {
-            row.rowHtml = this.getRowHtml(row, columns, headerData);
-        }
+        this.buildRowHtml(type, rowData, headerData);
 
         return rowData;
-    }
-
-    setObjectColumnData(obj, prop, data, ignoreZero) {
-        const val = obj[prop];
-        if (val || (!ignoreZero && val === 0)) {
-            data[prop] = { display: val, sortValue: val };
-        }
     }
 
     setPriceColumnData(price, data) {
@@ -478,19 +459,6 @@ export class DnD5e extends BaseSystem {
             const sortValue = rarities.indexOf(rarity);
             data.rarity = { display: CONFIG.DND5E.itemRarity[rarity], sortValue: sortValue };
         }
-    }
-
-    getRowHtml(rowData, columns, headerData) {
-        let rowHtml = "";
-        for (let [prop, val] of Object.entries(headerData)) {
-            if (!columns.includes(prop)) continue;
-            rowHtml += `
-            <td class="${val.class}">
-                <p class="item-row-text">${rowData[prop].display}</p>
-            </td>
-            `;
-        }
-        return rowHtml;
     }
 
     getAdditionalSearchesData(browserDialog, items) {
