@@ -4,6 +4,7 @@ import { BaseSystem } from "./base-system.js";
 
 export class DnD5e extends BaseSystem {
 
+    static ADDITIONAL_SEARCHES_TEMPLATE = `${PATH}/templates/partials/additional-searches-dnd5e.hbs`;
     static INDEX_FIELDS = ["system", "labels"];
     static ITEM_TYPES = ["background", "class", "consumable", "container", "equipment", "feat", "loot", "race", "spell", "subclass", "tool", "weapon"];
     static HEADER_CONFIG = {
@@ -109,6 +110,16 @@ export class DnD5e extends BaseSystem {
         return [];
     }
 
+    filterItems(items) {
+        let filtered = super.filterItems(items);
+
+        //Filter by the search desc string
+        if (this.searchDesc) {
+            filtered = filtered.filter((i) => i.system.description.value.toLowerCase().includes(this.searchDesc.toLowerCase()));
+        }
+
+        return filtered;
+    }
 
     getDefaultRowData(type) {
         let columns = this.getColumnsForType(type);

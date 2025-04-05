@@ -124,7 +124,6 @@ export class Swade extends BaseSystem {
         return [];
     }
 
-
     filterItems(items) {
         let filtered = super.filterItems(items);
 
