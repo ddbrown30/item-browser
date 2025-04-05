@@ -106,4 +106,16 @@ export class Utils {
     static async setModuleFlag(obj, flag, data) {
         return await obj.setFlag(MODULE_CONFIG.NAME, flag, data);
     }
+
+    static capitalizeFirstLetter(string) {
+        if (!string) return string;
+        return String(string).charAt(0).toUpperCase() + String(string).slice(1);
+    }
+
+    static toTitleCase(string) {
+        return string.replace(
+          /\w\S*/g,
+          text => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
+        );
+      }
 }

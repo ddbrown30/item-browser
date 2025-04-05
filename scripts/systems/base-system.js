@@ -10,11 +10,15 @@ export class BaseSystem {
     static ITEM_TYPES = [];
     static HEADER_CONFIG = {};
 
+    getColumnsForType(type) {
+        return [];
+    }
+
     filterItems(items) {
         return items;
     }
 
-    buildRowData(items) {
+    async buildRowData(items) {
         let rowData = [];
         for (const item of items) {
             let data = this.buildCommonRowData(item);
@@ -61,6 +65,10 @@ export class BaseSystem {
     }
 
     getAdditionalFiltersData(browserDialog, items) {
+        return {};
+    }
+
+    getAdditionalSearchesData(browserDialog, items) {
         return {};
     }
 

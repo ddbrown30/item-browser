@@ -40,7 +40,6 @@
     padding: 0.1rem 0.5rem;
 }
 
-
 .item-browser-dialog main {
     column-count: 2;
     display: flex;
@@ -96,11 +95,11 @@
 
 .item-browser-dialog table td {
     padding: 0.1rem 0.2rem;
+    line-height: 0;
 }
 
 .item-browser-dialog table tr {
     background: #ffffff40;
-    height: 40px;
 }
 
 .item-browser-dialog table tr:nth-child(odd) {
@@ -117,6 +116,8 @@
 
 .item-browser-dialog .item-row-text {
     padding: unset;
+    margin: unset;
+    line-height: normal;
 }
 
 .item-browser-dialog .item-cell-name .item-row-text {
@@ -181,9 +182,59 @@
     width: 350px;
 }
 
+.item-browser-dialog .item-cell-dndprice {
+    width: 80px;
+}
+
+.item-browser-dialog .item-cell-dnddamage {
+    width: 120px;
+    white-space: pre-line;
+}
+
+.item-browser-dialog .item-cell-attunement {
+    width: 80px;
+}
+
+.item-browser-dialog .item-cell-base-weapon {
+    width: 80px;
+}
+
+.item-browser-dialog .item-cell-equipment-type {
+    width: 80px;
+}
+
+.item-browser-dialog .item-cell-spellLevel {
+    width: 80px;
+}
+
+.item-browser-dialog .item-cell-ac {
+    width: 80px;
+}
+
+.item-browser-dialog .item-cell-target {
+    width: 120px;
+}
+
+.item-browser-dialog .item-cell-components {
+    width: 80px;
+}
+
+.item-browser-dialog .item-cell-cast-time {
+    width: 80px;
+}
+
+.item-browser-dialog .item-cell-school {
+    width: 110px;
+}
+
+.item-browser-dialog .item-cell-rarity {
+    width: 80px;
+    text-transform: capitalize;
+}
+
 .item-browser-dialog .item-option {
     box-shadow: revert;
-    height: 100%;
+    height: 1px;
     position: relative;
 }
 

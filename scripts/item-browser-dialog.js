@@ -111,7 +111,7 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
         if (!headerData[this.sortColumn]) this.sortColumn = "name"; //Reset the sort column if we no longer have that column
 
         let filteredItems = this.filterItems(items);
-        this.rowData = this.systemHandler.buildRowData(filteredItems, this.typeFilter, headerData);
+        this.rowData = await this.systemHandler.buildRowData(filteredItems, this.typeFilter, headerData);
         this.rowData = this.filterRows(this.rowData);
         this.rowData = this.sortRows(this.rowData, this.sortColumn, this.sortOrder);
 
@@ -277,15 +277,25 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
     }
 
     getTypeFilterOptions(items, types) {
+        if (types.length == 0) {
+            types = items.reduce(
+                (accumulator, current, index, list) => {
+                    accumulator.add(current.type);
+                    return accumulator;
+                }, new Set(),
+            );
+        }
         let itemTypes = [];
         for (let type of types) {
-            if (items.find((i) => i.type == type)) itemTypes.push({ id: type, label: `ITEM_BROWSER.TypeFilters.${type}` });
+            let stringId = `ITEM_BROWSER.TypeFilters.${type}`;
+            let label = game.i18n.has(stringId) ? game.i18n.localize(stringId) : Utils.capitalizeFirstLetter(type);
+            if (items.find((i) => i.type == type)) itemTypes.push({ id: type, label: label });
         }
 
         itemTypes = itemTypes.sort((a, b) => a.label.localeCompare(b.label));
 
         if (itemTypes.length == 0) {
-            itemTypes.push({ id: "", label: `ITEM_BROWSER.TypeFilters.NoItems` });
+            itemTypes.push({ id: "", label: game.i18n.localize(`ITEM_BROWSER.TypeFilters.NoItems`) });
         }
 
         this.typeFilter = this.typeFilter ?? itemTypes[itemTypes.length - 1].id;
@@ -338,6 +348,8 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
             }
         }
 
+        filtered = this.filterItemsByType(filtered);
+
         //System specific filter
         filtered = this.systemHandler.filterItems(filtered);
 
@@ -366,7 +378,7 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
             const sortB = b[sortColumn];
             if (sortA.display == sortB.display) return 0;
 
-            if (sortA.sortValue == Number.MAX_SAFE_INTEGER && sortB.sortValue == Number.MAX_SAFE_INTEGER) {
+            if (sortA.sortValue == Number.MAX_SAFE_INTEGER || sortB.sortValue == Number.MAX_SAFE_INTEGER) {
                 //If these are both max int it means they're both "invalid" values but they may be different
                 //In this case, do a string compare of their display value as a tie breaker but always treat "-" as higher so it gets pushed to the bottom of the list
                 if (sortA.display == "-") return sortOrder;

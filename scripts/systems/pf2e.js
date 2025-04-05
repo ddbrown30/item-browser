@@ -7,7 +7,7 @@ export class PF2e extends BaseSystem {
     static INDEX_FIELDS = ["system"];
     static ITEM_TYPES = [];//["armor", "consumable", "edge", "gear", "hindrance", "power", "shield", "skill", "weapon"];
 
-    buildRowData(items) {
+    async buildRowData(items) {
         let rowData = [];
 
         for (const item of items) {

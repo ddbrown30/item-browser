@@ -146,7 +146,7 @@ export class Swade extends BaseSystem {
         return rowData;
     }
 
-    buildRowData(items, type, headerData) {
+    async buildRowData(items, type, headerData) {
         let rowData = [];
         for (const item of items) {
             let data = {
@@ -283,7 +283,7 @@ export class Swade extends BaseSystem {
     //Copied from the swade system code since there's no other way to build the string with index data
     //If that code changes, this will need to be updated
     getRequirementString(requirements) {
-        return (requirements).reduce(
+        return requirements.reduce(
             (accumulator, current, index, list) => {
                 accumulator += this.requirementToString(current);
                 if (index !== list.length - 1) {

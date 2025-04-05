@@ -49,6 +49,23 @@
     "ITEM_BROWSER.PP": "PP",
     "ITEM_BROWSER.Duration": "Duration",
     "ITEM_BROWSER.Requirements": "Requirements",
+    "ITEM_BROWSER.Price": "Price",
+    "ITEM_BROWSER.ToHit": "To Hit",
+    "ITEM_BROWSER.Attunement": "Requires Attunement",
+    "ITEM_BROWSER.BaseWeapon": "Base Weapon",
+    "ITEM_BROWSER.EquipmentType": "Equipment Type",
+    "ITEM_BROWSER.Rarity": "Rarity",
+    "ITEM_BROWSER.AC": "AC",
+    "ITEM_BROWSER.Healing": "Healing",
+    "ITEM_BROWSER.Level": "Level",
+    "ITEM_BROWSER.School": "School",
+    "ITEM_BROWSER.Components": "Components",
+    "ITEM_BROWSER.CastTime": "Cast Time",
+    "ITEM_BROWSER.Classes": "Classes",
+    "ITEM_BROWSER.Target": "Target",
+
+    "ITEM_BROWSER.Yes": "Yes",
+    "ITEM_BROWSER.No": "No",
 
     "ITEM_BROWSER.None": "None",
 
