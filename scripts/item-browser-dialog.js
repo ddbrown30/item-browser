@@ -147,7 +147,7 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
         let data = await this._prepareContext();
 
         //Re-render just the item list with the newly filtered list and replace the html
-        const content = await renderTemplate(this.systemHandler.constructor.ITEM_LIST_TEMPLATE, data);
+        const content = await renderTemplate(DEFAULT_CONFIG.templates.itemList, data);
         let optionsBox = this.element.querySelector(".list-panel");
         let itemList = optionsBox.querySelector(".item-list");
         itemList.innerHTML = content;

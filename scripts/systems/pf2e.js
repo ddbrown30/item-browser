@@ -3,7 +3,6 @@ import { BaseSystem } from "./base-system.js";
 
 export class PF2e extends BaseSystem {
 
-    static ITEM_LIST_TEMPLATE = `${PATH}/templates/partials/item-list-pf2e.hbs`;
     static INDEX_FIELDS = ["system"];
     static ITEM_TYPES = [];//["armor", "consumable", "edge", "gear", "hindrance", "power", "shield", "skill", "weapon"];
 

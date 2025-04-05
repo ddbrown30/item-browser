@@ -3,7 +3,6 @@ import { BaseSystem } from "./base-system.js";
 
 export class Swade extends BaseSystem {
 
-    static ITEM_LIST_TEMPLATE = `${PATH}/templates/partials/item-list-swade.hbs`;
     static ADDITIONAL_SEARCHES_TEMPLATE = `${PATH}/templates/partials/additional-searches-swade.hbs`;
     static INDEX_FIELDS = ["system"];
     static ITEM_TYPES = ["ability", "ancestry", "armor", "consumable", "edge", "gear", "hindrance", "power", "shield", "skill", "weapon"];

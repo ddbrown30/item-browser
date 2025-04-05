@@ -14,6 +14,7 @@ export const DEFAULT_CONFIG = {
         itemBrowserButton: `${PATH}/templates/item-browser-button.hbs`,
         itemBrowserDialogBody: `${PATH}/templates/item-browser-dialog-body.hbs`,
         itemBrowserDialogFooter: `${PATH}/templates/item-browser-dialog-footer.hbs`,
+        itemList: `${PATH}/templates/partials/item-list.hbs`,
     }
 }
 

@@ -4,7 +4,6 @@ import { BaseSystem } from "./base-system.js";
 
 export class DnD5e extends BaseSystem {
 
-    static ITEM_LIST_TEMPLATE = `${PATH}/templates/partials/item-list-dnd5e.hbs`;
     static INDEX_FIELDS = ["system", "labels"];
     static ITEM_TYPES = ["background", "class", "consumable", "container", "equipment", "feat", "loot", "race", "spell", "subclass", "tool", "weapon"];
     static HEADER_CONFIG = {
@@ -121,18 +120,12 @@ export class DnD5e extends BaseSystem {
     }
 
     async buildRowData(items, type, headerData) {
-        let i = 0;
         let rowData = [];
         for (const item of items) {
             let data = {
                 ...this.buildCommonRowData(item),
                 ...this.getDefaultRowData(type),
             };
-
-            console.log(i++);
-            if (item.name == "Alarm") {
-                console.log("here");
-            }
 
             this.setPriceColumnData(item.system.price, data);
             this.setWeightColumnData(item.system.weight, data);

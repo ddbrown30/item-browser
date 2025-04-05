@@ -57,7 +57,7 @@ export class Utils {
      * Loads templates for partials
      */
     static async loadTemplates() {
-        let listPartial = await loadTemplates([game.itemBrowser.systemHandler.constructor.ITEM_LIST_TEMPLATE]);
+        let listPartial = await loadTemplates([MODULE_CONFIG.DEFAULT_CONFIG.templates.itemList]);
         Handlebars.registerPartial("itemBrowserListPartial", listPartial[0]);
 
         let filtersTemplate = game.itemBrowser.systemHandler.constructor.ADDITIONAL_FILTERS_TEMPLATE;

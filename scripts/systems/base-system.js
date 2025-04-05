@@ -3,7 +3,6 @@ import { PATH } from "../module-config.js";
 
 export class BaseSystem {
 
-    static ITEM_LIST_TEMPLATE = `${PATH}/templates/partials/item-list-base.hbs`;
     static ADDITIONAL_FILTERS_TEMPLATE = "";
     static ADDITIONAL_SEARCHES_TEMPLATE = "";
     static INDEX_FIELDS = [];
