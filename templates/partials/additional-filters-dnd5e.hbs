@@ -1,12 +1,8 @@
-<div class="speed-filter filter-row">
-    <label for="speed-filter">{{{localize "ITEM_BROWSER.FilterSpeed"}}}</label>
-    <select id="speed-filter" name="speed-filter" type="dropdown" placeholder="Filter Speed...">
-        {{selectOptions additionalFiltersData.speeds selected=additionalFiltersData.filters.speedFilter localize=true valueAttr="id" labelAttr="label"}}
-    </select>
-</div>
-<div class="sense-filter filter-row">
-    <label for="sense-filter">{{{localize "ITEM_BROWSER.FilterSense"}}}</label>
-    <select id="sense-filter" name="sense-filter" type="dropdown" placeholder="Filter Sense...">
-        {{selectOptions additionalFiltersData.senses selected=additionalFiltersData.filters.senseFilter localize=true valueAttr="id" labelAttr="label"}}
-    </select>
-</div>
+{{#if (eq typeFilter "spell")}}
+    <div class="spellLevel-filter filter-row">
+        <label for="spellLevel-filter">{{{localize "ITEM_BROWSER.FilterSpellLevel"}}}</label>
+        <select id="spellLevel-filter" name="spellLevel-filter" type="dropdown" placeholder="Filter Spell Level...">
+            {{selectOptions additionalFiltersData.spellLevels selected=additionalFiltersData.filters.spellLevelFilter localize=true valueAttr="id" labelAttr="label"}}
+        </select>
+    </div>
+{{/if}}

@@ -12,7 +12,9 @@
                 {{selectOptions typeFilterOptions selected=typeFilter localize=true valueAttr="id" labelAttr="label"}}
             </select>
         </div>
-        {{#> itemBrowserAdditionalFiltersPartial additionalFiltersData=additionalFiltersData}}{{/itemBrowserAdditionalFiltersPartial}}
+        <div class="system-filters">
+            {{#> itemBrowserAdditionalFiltersPartial additionalFiltersData=additionalFiltersData}}{{/itemBrowserAdditionalFiltersPartial}}
+        </div>
     </div>
     <div class="list-panel">
         <div class="search-input">

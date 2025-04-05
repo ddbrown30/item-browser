@@ -380,7 +380,8 @@ export class Swade extends BaseSystem {
         const searchDescSelector = browserDialog.element.querySelector('input.search-desc');
         searchDescSelector.addEventListener("keyup", async event => {
             this.searchDesc = event.target.value;
-            await browserDialog.renderItemList(event);
+            let data = await browserDialog._prepareContext();
+            await browserDialog.renderItemList(data);
         });
     }
 }

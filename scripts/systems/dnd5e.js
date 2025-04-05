@@ -4,6 +4,7 @@ import { BaseSystem } from "./base-system.js";
 
 export class DnD5e extends BaseSystem {
 
+    static ADDITIONAL_FILTERS_TEMPLATE = `${PATH}/templates/partials/additional-filters-dnd5e.hbs`;
     static ADDITIONAL_SEARCHES_TEMPLATE = `${PATH}/templates/partials/additional-searches-dnd5e.hbs`;
     static INDEX_FIELDS = ["system", "labels"];
     static ITEM_TYPES = ["background", "class", "consumable", "container", "equipment", "feat", "loot", "race", "spell", "subclass", "tool", "weapon"];
@@ -116,6 +117,11 @@ export class DnD5e extends BaseSystem {
         //Filter by the search desc string
         if (this.searchDesc) {
             filtered = filtered.filter((i) => i.system.description.value.toLowerCase().includes(this.searchDesc.toLowerCase()));
+        }
+
+        //Filter by spell level
+        if (this.filters.spellLevelFilter) {
+            filtered = filtered.filter((i) => i.type == "spell" && i.system.level == this.filters.spellLevelFilter);
         }
 
         return filtered;
@@ -495,12 +501,28 @@ export class DnD5e extends BaseSystem {
         };
     }
 
+    getAdditionalFiltersData(browserDialog, actors) {
+        let spellLevels = [];
+        spellLevels.push({ id: "", label: game.i18n.localize("ITEM_BROWSER.FilterAllSpellLevels") });
+        for (let [level, value] of Object.entries(CONFIG.DND5E.spellLevels)) {
+            spellLevels.push({ id: level, label: value });
+        }
+
+        return {
+            spellLevels: spellLevels,
+            filters: this.filters,
+        };
+    }
+
     activateListeners(browserDialog) {
+        super.addDropdownListener("spellLevel", "spellLevelFilter", browserDialog);
+
         //Add a keyup listener on the search desc input so that we can filter as we type
         const searchDescSelector = browserDialog.element.querySelector('input.search-desc');
         searchDescSelector?.addEventListener("keyup", async event => {
             this.searchDesc = event.target.value;
-            await browserDialog.renderItemList(event);
+            let data = await browserDialog._prepareContext();
+            await browserDialog.renderItemList(data);
         });
     }
 }

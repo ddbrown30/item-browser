@@ -77,14 +77,15 @@ export class BaseSystem {
     addDropdownListener(type, filterProperty, browserDialog) {
         let selectorString = 'select[id="' + type + '-filter"]';
         const selector = browserDialog.element.querySelector(selectorString);
-        selector.addEventListener("change", event => {
+        selector.addEventListener("change", async event => {
             const selection = $(event.target).find("option:selected");
             this.filters[filterProperty] = selection.val();
-            browserDialog.render();
+            let data = await browserDialog._prepareContext();
+            browserDialog.renderItemList(data);
         });
     }
 
-    onOpenBrowser() {
+    clearFilters() {
         this.filters = {};
     }
 }

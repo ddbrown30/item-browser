@@ -44,7 +44,7 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
         });
 
         this.systemHandler = game.itemBrowser.systemHandler;
-        this.systemHandler.onOpenBrowser(this);
+        this.systemHandler.clearFilters();
     }
 
     onDragStart(event) {
@@ -143,17 +143,26 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
         this.activateListeners();
     }
 
-    async renderItemList(event) {
-        let data = await this._prepareContext();
-
-        //Re-render just the item list with the newly filtered list and replace the html
+    async renderItemList(data) {
+        //Re-render just the item list and replace the html
         const content = await renderTemplate(DEFAULT_CONFIG.templates.itemList, data);
-        let optionsBox = this.element.querySelector(".list-panel");
-        let itemList = optionsBox.querySelector(".item-list");
+        let listPanel = this.element.querySelector(".list-panel");
+        let itemList = listPanel.querySelector(".item-list");
         itemList.innerHTML = content;
 
         //We need to activate listeners again since we just stomped over the existing html
         this.activateTableListeners(this.element);
+    }
+
+    async renderSystemFilters(data) {
+        //Re-render just the filters list and replace the html
+        const content = await renderTemplate(this.systemHandler.constructor.ADDITIONAL_FILTERS_TEMPLATE, data);
+        let filterPanel = this.element.querySelector(".filter-panel");
+        let filters = filterPanel.querySelector(".system-filters");
+        filters.innerHTML = content;
+
+        //We need to activate listeners again since we just stomped over the existing html
+        this.systemHandler.activateListeners(this);
     }
 
     activateListeners() {
@@ -161,22 +170,27 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
         const searchNameSelector = this.element.querySelector('input.search-name');
         searchNameSelector.addEventListener("keyup", async event => {
             this.searchName = event.target.value;
-            this.renderItemList(event);
+            let data = await this._prepareContext();
+            this.renderItemList(data);
         });
 
         //Add the listener to the source dropdown
         const filterSelector = this.element.querySelector('select[id="source-filter"]');
-        filterSelector.addEventListener("change", event => {
+        filterSelector.addEventListener("change", async event => {
             const selection = $(event.target).find("option:selected");
             this.sourceFilter = selection.val();
-            this.renderItemList(event);
+            let data = await this._prepareContext();
+            this.renderItemList(data);
         });
 
         const typeSelector = this.element.querySelector('select[id="type-filter"]');
-        typeSelector.addEventListener("change", event => {
+        typeSelector.addEventListener("change", async event => {
             const selection = $(event.target).find("option:selected");
             this.typeFilter = selection.val();
-            this.renderItemList(event);
+            this.systemHandler.clearFilters();
+            let data = await this._prepareContext();
+            this.renderItemList(data);
+            this.renderSystemFilters(data);
         });
 
         this.activateTableListeners(this.element);
@@ -199,7 +213,8 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
                         this.sortOrder = 1;
                     }
                     this.sortColumn = columnName;
-                    await this.renderItemList(event);
+                    let data = await this._prepareContext();
+                    await this.renderItemList(data);
                 });
             }
         }
@@ -277,6 +292,8 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
     }
 
     getTypeFilterOptions(items, types) {
+        if (this.typeFilterOptions) return this.typeFilterOptions;
+
         if (types.length == 0) {
             types = items.reduce(
                 (accumulator, current, index, list) => {
@@ -299,7 +316,8 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
         }
 
         this.typeFilter = this.typeFilter ?? itemTypes[itemTypes.length - 1].id;
-        return itemTypes;
+        this.typeFilterOptions = itemTypes;
+        return this.typeFilterOptions;
     }
 
     getHeaderData() {
