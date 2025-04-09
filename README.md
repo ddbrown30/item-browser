@@ -57,7 +57,7 @@ If you would like to add additional searches, you can optionally create another 
 
 ### Additional Filters
 
-If you would like to add additional filters, you can optionally create another .hbs file to do this. Check out `additional-filters-dnd5e.hbs` for an example. In there, we are adding another drop down the filters based on the spell level. The dropdown is only visible when Spells are the active type (this is handled in the hbs file). The logic for this is then implemented in `getAdditionalFiltersData` `activateListeners`, and `filterItems` in the Dnd5e handler class.
+If you would like to add additional filters, you can optionally create another .hbs file to do this. Check out `additional-filters-dnd5e.hbs` for an example. In there, we are adding another drop down the filters based on the spell level. The dropdown is only visible when Spells are the active type (this is handled in the hbs file). The logic for this is then implemented in `getAdditionalFiltersData`, `activateListeners`, and `filterItems` in the Dnd5e handler class.
 
 ### Hooking it Up
 
