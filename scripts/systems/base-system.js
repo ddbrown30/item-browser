@@ -1,4 +1,4 @@
-import { CONST, PATH } from "../module-config.js";
+import { CONST } from "../module-config.js";
 
 
 export class BaseSystem {
@@ -60,9 +60,6 @@ export class BaseSystem {
         let rowHtml = "";
         for (let [prop, val] of Object.entries(headerData)) {
             if (!columns.includes(prop)) continue;
-            if (!rowData[prop]) {
-                console.log("asda");
-            }
             rowHtml += `
             <td class="${val.class}">
                 <p class="item-row-text">${rowData[prop].display}</p>
