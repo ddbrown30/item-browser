@@ -214,7 +214,7 @@ export class DnD5e extends BaseSystem {
                     formula += damage.number + "d" + damage.denomination;
                 }
 
-                if (damage.custom.enabled) {
+                if (damage.custom?.enabled) {
                     formula += damage.custom.formula;
                 }
 
