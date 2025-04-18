@@ -70,6 +70,7 @@
     "ITEM_BROWSER.No": "No",
 
     "ITEM_BROWSER.None": "None",
+    "ITEM_BROWSER.Unknown": "Unknown",
 
     "ITEM_BROWSER.WaitError": "Item Browser was used as a selector but the requester did not wait for the results.",
 

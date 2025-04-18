@@ -442,6 +442,13 @@ export class DnD5e extends BaseSystem {
 
     async setBaseWeaponColumnData(baseWeaponType, data) {
         if (baseWeaponType) {
+            let weaponId = CONFIG.DND5E.weaponIds[baseWeaponType];
+            if (!weaponId) {
+                let unknownString = game.i18n.localize("ITEM_BROWSER.Unknown");
+                data.baseWeapon = { display: unknownString, sortValue: unknownString };
+                return;
+            }
+
             let baseWeapon = await game.dnd5e.documents.Trait.getBaseItem(CONFIG.DND5E.weaponIds[baseWeaponType]);
             data.baseWeapon = { display: baseWeapon.name, sortValue: baseWeapon.name };
         }
