@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.3
+
+* Handle the case where the base weapon is missing
+* Handle damages with no types data
+
 ## 0.1.2
 
 * Fixed a possible null error in dnd5e
