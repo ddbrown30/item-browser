@@ -246,6 +246,16 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
                 selectButton.disabled = false;
             });
 
+            const expand = row.querySelector(".item-cell-expand");
+            expand.addEventListener("click", async event => {
+                event.stopPropagation();
+            });
+
+            expand.addEventListener("dblclick", async event => {
+                //We're only listening to the double click on the expand so that we can prevent it from triggering the select on the row
+                event.stopPropagation();
+            });
+
             row.addEventListener("dblclick", async event => {
                 this.select();
             });

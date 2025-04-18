@@ -106,7 +106,8 @@
     background: #ffffff40;
 }
 
-.item-browser-dialog table tr:nth-child(odd) {
+.item-browser-dialog table tr:nth-child(4n-2),
+.item-browser-dialog table tr:nth-child(4n-1) {
     background: none;
 }
 
@@ -129,9 +130,26 @@
     text-align: start;
 }
 
+.item-browser-dialog .item-cell-expand {
+    width: 20px;
+}
+
+.item-browser-dialog .item-desc {
+    display: revert;
+}
+
+.item-browser-dialog .item-desc > td {
+    line-height: normal;
+    text-align: left;
+    padding-left: 15px;
+}
+
+.item-browser-dialog .item-option td.item-cell-expand {
+    border-right: 2px groove var(--color-border-light-highlight);
+}
+
 .item-browser-dialog .item-cell-img {
     width: 55px;
-    padding-left: 0.2rem;
 }
 
 .item-browser-dialog .item-cell-name {
@@ -240,6 +258,14 @@
     box-shadow: revert;
     height: 1px;
     position: relative;
+}
+
+.item-browser-dialog .item-option .caret {
+  content: "\f078";
+  font-family: var(--font-awesome);
+  font-weight: bold;
+  color: var(--color-text-dark-5);
+  transition: all 250ms ease;
 }
 
 .item-browser-dialog .item-option:hover {

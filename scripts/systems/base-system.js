@@ -53,6 +53,7 @@ export class BaseSystem {
         let columns = this.getColumnsForType(type);
         for (let row of rowData) {
             row.rowHtml = this.getRowHtml(row, columns, headerData);
+            row.descRowHtml = this.getDescRowHtml(row, columns);
         }
     }
 
@@ -67,6 +68,19 @@ export class BaseSystem {
             `;
         }
         return rowHtml;
+    }
+
+    getDescRowHtml(rowData, columns) {
+        let descRowHtml = `
+        <tr class="item-desc">
+            <td class="item-cell-expand"></td>
+            <td class="item-cell-img"></td>
+            <td colspan="5">${rowData.desc}</td>
+            <td colspan="${columns.length}"></td>
+        </tr>
+        `;
+
+        return descRowHtml;
     }
 
     getTooltip(item) {

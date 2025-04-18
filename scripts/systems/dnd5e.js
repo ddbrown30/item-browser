@@ -167,6 +167,8 @@ export class DnD5e extends BaseSystem {
                 ...this.getDefaultRowData(type),
             };
 
+            data.desc = item.system.description.value;
+
             this.setPriceColumnData(item.system.price, data);
             this.setWeightColumnData(item.system.weight, data);
             this.setDamageColumnData(item, data);

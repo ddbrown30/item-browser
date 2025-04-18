@@ -1,26 +1,32 @@
 <colgroup>
+    <col class="item-cell-expand" />
     <col class="item-cell-img" />
     <col class="item-cell-name" />
     <col /> {{!-- This combined with the colspan="2" below lets us fake a min-width on the name column --}}
     {{#each headerData}}
-    <col class="{{class}}" />
+        <col class="{{class}}" />
     {{/each}}
 </colgroup>
 <tr class="item-header">
     <th></th>
+    <th></th>
     <th colspan="2" data-sort-id="name" style="text-align: start;">{{{localize "ITEM_BROWSER.Name"}}}</th>
     {{#each headerData}}
-    <th {{{sort}}}>{{{localize label}}}</th>
+        <th {{{sort}}}>{{{localize label}}}</th>
     {{/each}}
 </tr>
 {{#each items}}
-<tr class="item-option{{#if (and ../selectedItem (eq ../selectedItem uuid))}} selected{{/if}}" data-item-id="{{uuid}}" data-tooltip="{{tooltip}}">
-    <td class="item-cell-img">
-        <img src="{{img.display}}" alt="{{name.display}}" loading="lazy" class="item-row-img">
-    </td>
-    <td class="item-cell-name" colspan="2">
-        <p class="item-row-text">{{name.display}}</p>
-    </td>
-    {{{rowHtml}}}
-</tr>
+    <tr class="item-option{{#if (and ../selectedItem (eq ../selectedItem uuid))}} selected{{/if}}" data-item-id="{{uuid}}" data-tooltip="{{tooltip}}">
+        <td class="item-cell-expand">
+            <div class="fas fa-expand"></div>
+        </td>
+        <td class="item-cell-img">
+            <img src="{{img.display}}" alt="{{name.display}}" loading="lazy" class="item-row-img">
+        </td>
+        <td class="item-cell-name" colspan="2">
+            <p class="item-row-text">{{name.display}}</p>
+        </td>
+        {{{rowHtml}}}
+    </tr>
+    {{{descRowHtml}}}
 {{/each}}
