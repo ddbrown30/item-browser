@@ -207,11 +207,8 @@ export class DnD5e extends BaseSystem {
                 display += "\n";
             }
             sortValue = 0;
-            if (!damage.types) {
-                console.log("r2doesinc test ---- item: " + JSON.stringify(item) + " damage: " + JSON.stringify(damage));
-            }
 
-            const damageTypes = Array.from(damage.types);
+            const damageTypes = damage.types ? Array.from(damage.types) : [];
             if (damageTypes.length) {
                 let formula = "";
                 if (damage.number) {
