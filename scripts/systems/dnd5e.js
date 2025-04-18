@@ -124,6 +124,38 @@ export class DnD5e extends BaseSystem {
             filtered = filtered.filter((i) => i.type == "spell" && i.system.level == this.filters.spellLevelFilter);
         }
 
+        //Filter by rarity
+        if (this.filters.rarityFilter) {
+            filtered = filtered.filter((i) => {
+                if (!i.system.rarity) {
+                    return this.filters.rarityFilter == "common";
+                } else {
+                    return i.system.rarity == this.filters.rarityFilter;
+                }
+            });
+        }
+
+        //Filter by base weapon
+        if (this.filters.baseWeaponFilter) {
+            filtered = filtered.filter((i) => i.type == "weapon" && i.system.type?.baseItem && i.system.type.baseItem == this.filters.baseWeaponFilter);
+        }
+
+        //Filter by equipment type
+        if (this.filters.equipmentTypeFilter) {
+            filtered = filtered.filter((i) => i.type == "equipment" && i.system.type.value == this.filters.equipmentTypeFilter);
+        }
+
+        //Filter by attunement
+        if (this.filters.attunementFilter) {
+            filtered = filtered.filter((i) => {
+                if( this.filters.attunementFilter == "no") {
+                    return !i.system.attunement;
+                } else {
+                    return !!i.system.attunement;
+                }
+            });
+        }
+
         return filtered;
     }
 
@@ -462,14 +494,16 @@ export class DnD5e extends BaseSystem {
     }
 
     setRarityColumnData(rarity, data) {
-        if (rarity) {
-            const rarities = ["common", "uncommon", "rare", "veryRare", "legendary", "artifact"];
-            const sortValue = rarities.indexOf(rarity);
-            data.rarity = { display: CONFIG.DND5E.itemRarity[rarity], sortValue: sortValue };
+        if (!rarity) {
+            rarity = "common";
         }
+
+        const rarities = ["common", "uncommon", "rare", "veryRare", "legendary", "artifact"];
+        const sortValue = rarities.indexOf(rarity);
+        data.rarity = { display: CONFIG.DND5E.itemRarity[rarity], sortValue: sortValue };
     }
 
-    getAdditionalSearchesData(browserDialog, items) {
+    async getAdditionalSearchesData(browserDialog, items) {
         this.filters.searchDesc = this.filters.searchDesc ?? "";
 
         return {
@@ -477,21 +511,55 @@ export class DnD5e extends BaseSystem {
         };
     }
 
-    getAdditionalFiltersData(browserDialog, actors) {
+    async getAdditionalFiltersData(browserDialog, items) {
         let spellLevels = [];
-        spellLevels.push({ id: "", label: game.i18n.localize("ITEM_BROWSER.FilterAllSpellLevels") });
+        spellLevels.push({ id: "", label: game.i18n.localize("ITEM_BROWSER.All") });
         for (let [level, value] of Object.entries(CONFIG.DND5E.spellLevels)) {
             spellLevels.push({ id: level, label: value });
         }
 
+        let rarities = [];
+        rarities.push({ id: "", label: game.i18n.localize("ITEM_BROWSER.All") });
+        for (let [rarity, value] of Object.entries(CONFIG.DND5E.itemRarity)) {
+            rarities.push({ id: rarity, label: value });
+        }
+
+        let attunements = [];
+        attunements.push({ id: "", label: game.i18n.localize("ITEM_BROWSER.All") });
+        attunements.push({ id: "yes", label: game.i18n.localize("ITEM_BROWSER.Yes") });
+        attunements.push({ id: "no", label: game.i18n.localize("ITEM_BROWSER.No") });
+
+        let baseWeapons = [];
+        for (let [weaponId, value] of Object.entries(CONFIG.DND5E.weaponIds)) {
+            const baseWeapon = await game.dnd5e.documents.Trait.getBaseItem(value);
+            baseWeapons.push({ id: weaponId, label: baseWeapon.name });
+        }
+        baseWeapons.sort((a, b) => a.label.localeCompare(b.label));
+        baseWeapons.unshift({ id: "", label: game.i18n.localize("ITEM_BROWSER.All") });
+
+        let equipmentTypes = [];
+        for (let [equipmentType, value] of Object.entries(CONFIG.DND5E.equipmentTypes)) {
+            equipmentTypes.push({ id: equipmentType, label: value });
+        }
+        equipmentTypes.sort((a, b) => a.label.localeCompare(b.label));
+        equipmentTypes.unshift({ id: "", label: game.i18n.localize("ITEM_BROWSER.All") });
+
         return {
             spellLevels: spellLevels,
+            rarities: rarities,
+            attunements: attunements,
+            baseWeapons: baseWeapons,
+            equipmentTypes: equipmentTypes,
             filters: this.filters,
         };
     }
 
     activateListeners(browserDialog) {
         super.addDropdownListener("spellLevel", "spellLevelFilter", browserDialog);
+        super.addDropdownListener("rarity", "rarityFilter", browserDialog);
+        super.addDropdownListener("attunement", "attunementFilter", browserDialog);
+        super.addDropdownListener("equipmentType", "equipmentTypeFilter", browserDialog);
+        super.addDropdownListener("baseWeapon", "baseWeaponFilter", browserDialog);
 
         //Add a keyup listener on the search desc input so that we can filter as we type
         const searchDescSelector = browserDialog.element.querySelector('input.search-desc');

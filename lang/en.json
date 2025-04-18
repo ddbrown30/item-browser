@@ -3,16 +3,23 @@
     "ITEM_BROWSER.OpenItemBrowser": "Open Item Browser",
     "ITEM_BROWSER.SearchName": "Name:",
     "ITEM_BROWSER.SearchDescription": "Description:",
-    "ITEM_BROWSER.FilterSource": "Filter Source:",
-    "ITEM_BROWSER.FilterType": "Filter Type:",
-    "ITEM_BROWSER.FilterSpellLevel": "Filter Spell Level:",
     "ITEM_BROWSER.WorldCompendium": "World Compendium",
-    "ITEM_BROWSER.FilterAllItems": "All Items",
-    "ITEM_BROWSER.FilterWorldItems": "World Items",
-    "ITEM_BROWSER.FilterAllSpellLevels": "All",
     "ITEM_BROWSER.Select": "Select",
     "ITEM_BROWSER.Open": "Open",
     "ITEM_BROWSER.Close": "Close",
+
+    "ITEM_BROWSER.Source.AllItems": "All Items",
+    "ITEM_BROWSER.Source.WorldItems": "World Items",
+
+    "ITEM_BROWSER.Filter": {
+        "Source": "Source:",
+        "Type": "Type:",
+        "SpellLevel": "Spell Level:",
+        "Rarity": "Rarity:",
+        "Attunement": "Requires Attunement:",
+        "BaseWeapon": "Base Weapon:",
+        "EquipmentType": "Equipment Type:"
+    },
 
     "ITEM_BROWSER.TypeFilters": {
         "NoItems": "No Items Found",
@@ -69,6 +76,7 @@
     "ITEM_BROWSER.Yes": "Yes",
     "ITEM_BROWSER.No": "No",
 
+    "ITEM_BROWSER.All": "All",
     "ITEM_BROWSER.None": "None",
     "ITEM_BROWSER.Unknown": "Unknown",
 

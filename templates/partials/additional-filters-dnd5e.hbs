@@ -1,8 +1,40 @@
 {{#if (eq typeFilter "spell")}}
     <div class="spellLevel-filter filter-row">
-        <label for="spellLevel-filter">{{{localize "ITEM_BROWSER.FilterSpellLevel"}}}</label>
+        <label for="spellLevel-filter">{{{localize "ITEM_BROWSER.Filter.SpellLevel"}}}</label>
         <select id="spellLevel-filter" name="spellLevel-filter" type="dropdown" placeholder="Filter Spell Level...">
             {{selectOptions additionalFiltersData.spellLevels selected=additionalFiltersData.filters.spellLevelFilter localize=true valueAttr="id" labelAttr="label"}}
+        </select>
+    </div>
+{{/if}}
+{{#if headerData.baseWeapon}}
+    <div class="baseWeapon-filter filter-row">
+        <label for="baseWeapon-filter">{{{localize "ITEM_BROWSER.Filter.BaseWeapon"}}}</label>
+        <select id="baseWeapon-filter" name="baseWeapon-filter" type="dropdown" placeholder="Filter Rarity...">
+            {{selectOptions additionalFiltersData.baseWeapons selected=additionalFiltersData.filters.baseWeaponFilter localize=true valueAttr="id" labelAttr="label"}}
+        </select>
+    </div>
+{{/if}}
+{{#if headerData.equipmentType}}
+    <div class="equipmentType-filter filter-row">
+        <label for="equipmentType-filter">{{{localize "ITEM_BROWSER.Filter.EquipmentType"}}}</label>
+        <select id="equipmentType-filter" name="equipmentType-filter" type="dropdown" placeholder="Filter Rarity...">
+            {{selectOptions additionalFiltersData.equipmentTypes selected=additionalFiltersData.filters.equipmentTypeFilter localize=true valueAttr="id" labelAttr="label"}}
+        </select>
+    </div>
+{{/if}}
+{{#if headerData.attunement}}
+    <div class="attunement-filter filter-row">
+        <label for="attunement-filter">{{{localize "ITEM_BROWSER.Filter.Attunement"}}}</label>
+        <select id="attunement-filter" name="attunement-filter" type="dropdown" placeholder="Filter Rarity...">
+            {{selectOptions additionalFiltersData.attunements selected=additionalFiltersData.filters.attunementFilter localize=true valueAttr="id" labelAttr="label"}}
+        </select>
+    </div>
+{{/if}}
+{{#if headerData.rarity}}
+    <div class="rarity-filter filter-row">
+        <label for="rarity-filter">{{{localize "ITEM_BROWSER.Filter.Rarity"}}}</label>
+        <select id="rarity-filter" name="rarity-filter" type="dropdown" placeholder="Filter Rarity...">
+            {{selectOptions additionalFiltersData.rarities selected=additionalFiltersData.filters.rarityFilter localize=true valueAttr="id" labelAttr="label"}}
         </select>
     </div>
 {{/if}}

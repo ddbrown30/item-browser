@@ -8,7 +8,7 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
         id: "item-browser-dialog",
         tag: "div",
         classes: ["item-browser-dialog"],
-        window: { title: "ITEM_BROWSER.ItemBrowser" },
+        window: { title: "ITEM_BROWSER.ItemBrowser", resizable: true, },
         position: { width: 1000, height: 600 },
         actions: {
             select: function (event, button) { this.select(); },
@@ -64,11 +64,11 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
 
         if (this.options.worldItemsOnly) {
             this.sourceFilter = ItemBrowserDialog.WORLD_ITEMS_ID;
-            sources.push({ id: ItemBrowserDialog.WORLD_ITEMS_ID, label: game.i18n.localize("ITEM_BROWSER.FilterWorldItems") });
+            sources.push({ id: ItemBrowserDialog.WORLD_ITEMS_ID, label: game.i18n.localize("ITEM_BROWSER.Source.WorldItems") });
         } else {
             //Add an "all" default and the world items to the sources list
-            sources.push({ id: ItemBrowserDialog.ALL_ID, label: game.i18n.localize("ITEM_BROWSER.FilterAllItems") });
-            sources.push({ id: ItemBrowserDialog.WORLD_ITEMS_ID, label: game.i18n.localize("ITEM_BROWSER.FilterWorldItems") });
+            sources.push({ id: ItemBrowserDialog.ALL_ID, label: game.i18n.localize("ITEM_BROWSER.Source.AllItems") });
+            sources.push({ id: ItemBrowserDialog.WORLD_ITEMS_ID, label: game.i18n.localize("ITEM_BROWSER.Source.WorldItems") });
         }
 
         //Grab the items that are local to this world
@@ -98,8 +98,8 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
             }
         }
 
-        let additionalFiltersData = this.systemHandler.getAdditionalFiltersData(this, items);
-        let additionalSearchesData = this.systemHandler.getAdditionalSearchesData(this, items);
+        let additionalFiltersData = await this.systemHandler.getAdditionalFiltersData(this, items);
+        let additionalSearchesData = await this.systemHandler.getAdditionalSearchesData(this, items);
         let typeFilterOptions = this.getTypeFilterOptions(items, this.systemHandler.constructor.ITEM_TYPES);
 
         const headerData = this.getHeaderData();

@@ -342,7 +342,7 @@ export class Swade extends BaseSystem {
         }
     }
 
-    getAdditionalSearchesData(browserDialog, items) {
+    async getAdditionalSearchesData(browserDialog, items) {
         this.filters.searchDesc = this.filters.searchDesc ?? "";
 
         return {

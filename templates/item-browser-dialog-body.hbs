@@ -1,13 +1,14 @@
 <main>
     <div class="filter-panel">
+        <h3>Filters</h3>
         <div class="source-filter filter-row">
-            <label for="source-filter">{{{localize "ITEM_BROWSER.FilterSource"}}}</label>
+            <label for="source-filter">{{{localize "ITEM_BROWSER.Filter.Source"}}}</label>
             <select id="source-filter" name="source-filter" type="dropdown" placeholder="Filter Source...">
                 {{selectOptions sources selected=sourceFilter localize=true valueAttr="id" labelAttr="label"}}
             </select>
         </div>
         <div class="type-filter filter-row">
-            <label for="type-filter">{{{localize "ITEM_BROWSER.FilterType"}}}</label>
+            <label for="type-filter">{{{localize "ITEM_BROWSER.Filter.Type"}}}</label>
             <select id="type-filter" name="type-filter" type="dropdown" placeholder="Filter Type...">
                 {{selectOptions typeFilterOptions selected=typeFilter localize=true valueAttr="id" labelAttr="label"}}
             </select>

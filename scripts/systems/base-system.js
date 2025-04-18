@@ -94,11 +94,11 @@ export class BaseSystem {
         return path;
     }
 
-    getAdditionalFiltersData(browserDialog, items) {
+    async getAdditionalFiltersData(browserDialog, items) {
         return {};
     }
 
-    getAdditionalSearchesData(browserDialog, items) {
+    async getAdditionalSearchesData(browserDialog, items) {
         return {};
     }
 
