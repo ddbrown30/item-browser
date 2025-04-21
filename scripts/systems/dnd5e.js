@@ -358,6 +358,8 @@ export class DnD5e extends BaseSystem {
     }
 
     setComponentsColumnData(system, data) {
+        if (!system.properties) return;
+
         let componentsString = "";
 
         const properties = Array.from(system.properties);
