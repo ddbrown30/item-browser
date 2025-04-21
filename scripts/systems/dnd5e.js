@@ -148,7 +148,7 @@ export class DnD5e extends BaseSystem {
         //Filter by attunement
         if (this.filters.attunementFilter) {
             filtered = filtered.filter((i) => {
-                if( this.filters.attunementFilter == "no") {
+                if (this.filters.attunementFilter == "no") {
                     return !i.system.attunement;
                 } else {
                     return !!i.system.attunement;
@@ -345,11 +345,11 @@ export class DnD5e extends BaseSystem {
             const affectsConfig = CONFIG.DND5E.individualTargetTypes[target.affects.type];
 
             targetString = affectsConfig?.counted
-            ? game.i18n.format(
-                `${affectsConfig.counted}.${target.affects.count ? pr.select(target.affects.count) : "other"}`,
-                {number: target.affects.count ? game.dnd5e.utils.formatNumber(target.affects.count) : game.i18n.localize(`DND5E.TARGET.Count.${target.template.type ? "Every" : "Any"}`)}
+                ? game.i18n.format(
+                    `${affectsConfig.counted}.${target.affects.count ? pr.select(target.affects.count) : "other"}`,
+                    { number: target.affects.count ? game.dnd5e.utils.formatNumber(target.affects.count) : game.i18n.localize(`DND5E.TARGET.Count.${target.template.type ? "Every" : "Any"}`) }
                 ).trim().capitalize()
-            : (affectsConfig?.label ?? "");
+                : (affectsConfig?.label ?? "");
         }
 
         if (targetString) {
@@ -395,19 +395,22 @@ export class DnD5e extends BaseSystem {
         let duration = system.duration;
         if (duration) {
             duration.scalar = duration.units in CONFIG.DND5E.scalarTimePeriods;
-            if ( duration.scalar ) {
+            if (duration.scalar) {
+                duration.value = duration.value.toString();
                 duration.value = duration.value.replace("@item.level", system.level);
                 duration.value = game.dnd5e.dice.simplifyRollFormula(duration.value);
             } else duration.value = null;
 
             let durationString = "";
-            if ( duration.units ) {
-               durationString = CONFIG.DND5E.timePeriods[duration.units] ?? "";
-              if ( duration.value ) durationString = `${duration.value} ${durationString.toLowerCase()}`;
+            if (duration.units) {
+                durationString = CONFIG.DND5E.timePeriods[duration.units] ?? "";
+                if (duration.value) durationString = `${duration.value} ${durationString.toLowerCase()}`;
 
-              const properties = Array.from(system.properties);
-              durationString = properties?.includes("concentration")
-                ? game.i18n.format("DND5E.ConcentrationDuration", {duration: durationString}) : durationString;
+                if (system.properties) {
+                    const properties = Array.from(system.properties);
+                    durationString = properties?.includes("concentration")
+                        ? game.i18n.format("DND5E.ConcentrationDuration", { duration: durationString }) : durationString;
+                }
             }
 
             if (durationString) {
@@ -421,14 +424,14 @@ export class DnD5e extends BaseSystem {
 
         timeString = [
             system.activation.value, CONFIG.DND5E.activityActivationTypes[system.activation.type]?.label
-          ].filterJoin(" ");
+        ].filterJoin(" ");
         if (timeString) {
             data.castTime = { display: timeString, sortValue: timeString };
         }
     }
 
     setACColumnData(system, data) {
-        const isArmor = system.type.value in CONFIG.DND5E.armorTypes;
+        const isArmor = system.type?.value in CONFIG.DND5E.armorTypes;
         if (isArmor) {
             const isShield = system.type.value == "shield";
             let armorString = isShield ? "+" : "";
