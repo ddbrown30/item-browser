@@ -45,6 +45,7 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
 
         this.systemHandler = game.itemBrowser.systemHandler;
         this.systemHandler.clearFilters();
+        this.systemHandler.clearSearches();
     }
 
     onDragStart(event) {

@@ -128,8 +128,8 @@ export class Swade extends BaseSystem {
         let filtered = super.filterItems(items);
 
         //Filter by the search desc string
-        if (this.filters.searchDesc) {
-            filtered = filtered.filter((i) => i.system.description.toLowerCase().includes(this.filters.searchDesc.toLowerCase()));
+        if (this.searches.searchDesc) {
+            filtered = filtered.filter((i) => i.system.description.toLowerCase().includes(this.searches.searchDesc.toLowerCase()));
         }
 
         return filtered;
@@ -343,10 +343,10 @@ export class Swade extends BaseSystem {
     }
 
     async getAdditionalSearchesData(browserDialog, items) {
-        this.filters.searchDesc = this.filters.searchDesc ?? "";
+        this.searches.searchDesc = this.searches.searchDesc ?? "";
 
         return {
-            searchDesc: this.filters.searchDesc,
+            searchDesc: this.searches.searchDesc,
         };
     }
 
@@ -354,7 +354,7 @@ export class Swade extends BaseSystem {
         //Add a keyup listener on the search desc input so that we can filter as we type
         const searchDescSelector = browserDialog.element.querySelector('input.search-desc');
         searchDescSelector.addEventListener("keyup", async event => {
-            this.filters.searchDesc = event.target.value;
+            this.searches.searchDesc = event.target.value;
             let data = await browserDialog._prepareContext();
             await browserDialog.renderItemList(data);
         });
