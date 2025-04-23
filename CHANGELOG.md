@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.0
+
+* Moved searches into a separate property so they can be cleared independently of filters
+
 ## 0.2.1
 
 * Fixed a few dnd5e errors
