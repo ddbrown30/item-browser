@@ -18,7 +18,9 @@
         "Rarity": "Rarity:",
         "Attunement": "Requires Attunement:",
         "BaseWeapon": "Base Weapon:",
-        "EquipmentType": "Equipment Type:"
+        "EquipmentType": "Equipment Type:",
+        "Rank": "Rank:",
+        "Category": "Category:"
     },
 
     "ITEM_BROWSER.TypeFilters": {
@@ -27,6 +29,7 @@
         "ancestry": "Ancestries",
         "armor": "Armors",
         "consumable": "Consumables",
+        "category": "Category",
         "edge": "Edges",
         "gear": "Gear",
         "hindrance": "Hindrances",
@@ -72,6 +75,7 @@
     "ITEM_BROWSER.CastTime": "Cast Time",
     "ITEM_BROWSER.Classes": "Classes",
     "ITEM_BROWSER.Target": "Target",
+    "ITEM_BROWSER.Category": "Category",
 
     "ITEM_BROWSER.Yes": "Yes",
     "ITEM_BROWSER.No": "No",

@@ -236,6 +236,10 @@
     text-transform: capitalize;
 }
 
+.item-browser-dialog .item-cell-category {
+    width: 100px;
+}
+
 .item-browser-dialog .item-option {
     box-shadow: revert;
     height: 1px;

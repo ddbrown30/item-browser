@@ -1,0 +1,16 @@
+{{#if headerData.category}}
+    <div class="category-filter filter-row">
+        <label for="category-filter">{{{localize "ITEM_BROWSER.Filter.Category"}}}</label>
+        <select id="category-filter" name="category-filter" type="dropdown" placeholder="Filter Category...">
+            {{selectOptions additionalFiltersData.categories selected=additionalFiltersData.filters.categoryFilter valueAttr="id" labelAttr="label"}}
+        </select>
+    </div>
+{{/if}}
+{{#if headerData.rank}}
+    <div class="rank-filter filter-row">
+        <label for="rank-filter">{{{localize "ITEM_BROWSER.Filter.Rank"}}}</label>
+        <select id="rank-filter" name="rank-filter" type="dropdown" placeholder="Rank Category...">
+            {{selectOptions additionalFiltersData.ranks selected=additionalFiltersData.filters.rankFilter valueAttr="id" labelAttr="label"}}
+        </select>
+    </div>
+{{/if}}

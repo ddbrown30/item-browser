@@ -3,9 +3,10 @@ import { BaseSystem } from "./base-system.js";
 
 export class Swade extends BaseSystem {
 
+    static ADDITIONAL_FILTERS_TEMPLATE = `${PATH}/templates/partials/additional-filters-swade.hbs`;
     static ADDITIONAL_SEARCHES_TEMPLATE = `${PATH}/templates/partials/additional-searches-swade.hbs`;
     static INDEX_FIELDS = ["system"];
-    static ITEM_TYPES = ["ability", "ancestry", "armor", "consumable", "edge", "gear", "hindrance", "power", "shield", "skill", "weapon"];
+    static ITEM_TYPES = ["ability", "ancestry", "armor", "category", "consumable", "edge", "gear", "hindrance", "power", "shield", "skill", "weapon"];
     static HEADER_CONFIG = {
         damage: {
             class: "item-cell-damage",
@@ -107,6 +108,11 @@ export class Swade extends BaseSystem {
             label: "ITEM_BROWSER.Weight",
             sort: 'data-sort-id="weight"',
         },
+        category: {
+            class: "item-cell-category",
+            label: "ITEM_BROWSER.Category",
+            sort: 'data-sort-id="category"',
+        },
     };
 
     getColumnsForType(type) {
@@ -114,7 +120,7 @@ export class Swade extends BaseSystem {
         if (type == "ancestry") return [];
         if (type == "armor") return ["armor", "toughness", "minStr", "locations", "price", "weight"];
         if (type == "consumable") return ["price", "weight"];
-        if (type == "edge") return ["rank", "requirements"];
+        if (type == "edge") return ["rank", "category", "requirements"];
         if (type == "gear") return ["price", "weight"];
         if (type == "hindrance") return [];
         if (type == "power") return ["damage", "ap", "range", "rank", "pp", "duration"];
@@ -130,6 +136,32 @@ export class Swade extends BaseSystem {
         //Filter by the search desc string
         if (this.searches.searchDesc) {
             filtered = filtered.filter((i) => i.system.description.toLowerCase().includes(this.searches.searchDesc.toLowerCase()));
+        }
+
+        //Filter by category
+        if (this.filters.categoryFilter) {
+            filtered = filtered.filter((i) => i.system.category && i.system.category == this.filters.categoryFilter);
+        }
+
+        //Filter by rank
+        if (this.filters.rankFilter) {
+            filtered = filtered.filter((i) => {
+                if (i.system.rank) {
+                    return CONFIG.SWADE.ranks.findIndex((r) => i.system.rank.toLowerCase() == r.toLowerCase()) == this.filters.rankFilter;
+                } else if (i.system.requirements) {
+                    let rank = i.system.requirements.find((r) => r.type == "rank");
+                    if (rank) {
+                        if (typeof rank.value == "number") {
+                            return rank.value == this.filters.rankFilter;
+                        } else {
+                            let rankLabel = game.i18n.localize(rank.value);
+                            return CONFIG.SWADE.ranks.findIndex((r) => rankLabel.toLowerCase() == r.toLowerCase()) == this.filters.rankFilter;
+                        }
+                    }
+                }
+
+                return false;
+            });
         }
 
         return filtered;
@@ -155,6 +187,8 @@ export class Swade extends BaseSystem {
             this.setObjectColumnData(item.system, "cover", data, true);
             this.setObjectColumnData(item.system, "pp", data);
             this.setObjectColumnData(item.system, "duration", data);
+            this.setObjectColumnData(item.system, "category", data);
+
             if (item.system.actions) {
                 this.setObjectColumnData(item.system.actions, "traitMod", data);
                 this.setObjectColumnData(item.system.actions, "dmgMod", data);
@@ -350,7 +384,29 @@ export class Swade extends BaseSystem {
         };
     }
 
+    async getAdditionalFiltersData(browserDialog, items) {
+        let categories = items.filter((i) => i.system.category).map((item) => ({ id: item.system.category, label: item.system.category }));
+        categories = categories.filter((item, idx) => categories.findIndex((i) => i.id == item.id) === idx);
+        categories = categories.sort((a, b) => a.label.localeCompare(b.label));
+        categories.unshift({ id: "", label: game.i18n.localize("ACTOR_BROWSER.All") });
+
+        let ranks = [];
+        ranks.push({ id: "", label: game.i18n.localize("ITEM_BROWSER.All") });
+        for (let [rank, value] of Object.entries(CONFIG.SWADE.ranks)) {
+            ranks.push({ id: rank, label: value });
+        }
+
+        return {
+            categories: categories,
+            ranks: ranks,
+            filters: this.filters,
+        };
+    }
+
     activateListeners(browserDialog) {
+        super.addDropdownListener("category", "categoryFilter", browserDialog);
+        super.addDropdownListener("rank", "rankFilter", browserDialog);
+
         //Add a keyup listener on the search desc input so that we can filter as we type
         const searchDescSelector = browserDialog.element.querySelector('input.search-desc');
         searchDescSelector.addEventListener("keyup", async event => {
