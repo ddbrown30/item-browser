@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.0
+
+* Added category column to Edges
+* Added filters for category and rank to swade
+
 ## 0.3.0
 
 * Moved searches into a separate property so they can be cleared independently of filters
