@@ -36,7 +36,7 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
 
         super(options);
 
-        this.dragDrop = new DragDrop({
+        this.dragDrop = new foundry.applications.ux.DragDrop({
             dragSelector: '.item-option',
             callbacks: {
                 dragstart: this.onDragStart.bind(this),
