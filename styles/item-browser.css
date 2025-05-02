@@ -312,6 +312,7 @@
 
 .header-item-browser .open-item-browser-button {
     max-width: fit-content;
+    padding: 4px;
 }
 
 .header-item-browser {
