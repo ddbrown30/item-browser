@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.0
+
+* Fixes for v13
+* Added better dark theme support
+
 ## 0.4.0
 
 * Added category column to Edges
