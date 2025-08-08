@@ -21,7 +21,7 @@ export class Utils {
      * @param {*} awaitResult
      * @returns {Promise | ClientSetting}
      */
-    static async setSetting(key, value, awaitResult=false) {
+    static async setSetting(key, value, awaitResult = false) {
         if (!awaitResult) {
             return game.settings.set(MODULE_CONFIG.NAME, key, value);
         }
@@ -78,7 +78,7 @@ export class Utils {
         return ui.notifications[type](msg, options);
     }
 
-    static consoleMessage(type, {objects=[], message="", subStr=[]}) {
+    static consoleMessage(type, { objects = [], message = "", subStr = [] }) {
         const msg = `${MODULE_CONFIG.TITLE} | ${message}`;
         const params = [];
         if (objects && objects.length) params.push(objects);
@@ -112,10 +112,7 @@ export class Utils {
         return String(string).charAt(0).toUpperCase() + String(string).slice(1);
     }
 
-    static toTitleCase(string) {
-        return string.replace(
-          /\w\S*/g,
-          text => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
-        );
-      }
+    static documentTaggerActive() {
+        return game.modules.get("document-tagger")?.active;
+    }
 }

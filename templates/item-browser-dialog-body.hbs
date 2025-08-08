@@ -16,6 +16,9 @@
         <div class="system-filters">
             {{#> itemBrowserAdditionalFiltersPartial additionalFiltersData=additionalFiltersData}}{{/itemBrowserAdditionalFiltersPartial}}
         </div>
+        {{#if documentTaggerActive}}
+            <tag-input class="flat-tags" data-tags="{{documentTagsFilter}}"></tag-input>
+        {{/if}}
     </div>
     <div class="list-panel">
         <div class="search-input">

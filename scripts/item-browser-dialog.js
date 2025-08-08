@@ -1,4 +1,4 @@
-import { DEFAULT_CONFIG } from "./module-config.js";
+import { DEFAULT_CONFIG, CONST } from "./module-config.js";
 import { Utils } from "./utils.js";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
@@ -103,6 +103,8 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
         let additionalSearchesData = await this.systemHandler.getAdditionalSearchesData(this, items);
         let typeFilterOptions = this.getTypeFilterOptions(items, this.systemHandler.constructor.ITEM_TYPES);
 
+        this.documentTagsFilter ??= [];
+
         const headerData = this.getHeaderData();
 
         this.searchName = this.searchName ?? "";
@@ -130,6 +132,8 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
             additionalSearchesData: additionalSearchesData,
             headerData: headerData,
             typeFilterOptions: typeFilterOptions,
+            documentTaggerActive: Utils.documentTaggerActive,
+            documentTagsFilter: this.documentTagsFilter,
         };
     };
 
@@ -192,6 +196,12 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
             let data = await this._prepareContext();
             this.renderItemList(data);
             this.renderSystemFilters(data);
+        });
+
+        this.element.querySelector('tag-input')?.addEventListener("tagschanged", async event => {
+            this.documentTagsFilter = tagInput.tagList;
+            let data = await this._prepareContext();
+            await this.renderItemList(data);
         });
 
         this.activateTableListeners(this.element);
@@ -314,9 +324,11 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
 
         if (itemTypes.length == 0) {
             itemTypes.push({ id: "", label: game.i18n.localize(`ITEM_BROWSER.TypeFilters.NoItems`) });
+        } else {
+            itemTypes.unshift({ id: CONST.allTypesId, label: game.i18n.localize(`ITEM_BROWSER.TypeFilters.AllItems`) });
         }
 
-        this.typeFilter = this.typeFilter ?? itemTypes[itemTypes.length - 1].id;
+        this.typeFilter = this.typeFilter ?? CONST.allTypesId;
         this.typeFilterOptions = itemTypes;
         return this.typeFilterOptions;
     }
@@ -342,13 +354,23 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
         }
 
         //Filter by type
-        if (this.typeFilter) {
+        if (this.typeFilter && this.typeFilter != CONST.allTypesId) {
             filtered = filtered.filter((i) => i.type == this.typeFilter);
         }
 
         //If the dialog has limited the available types, remove them here
         if (this.options.itemTypes?.length) {
             filtered = filtered.filter((i) => this.options.itemTypes.includes(i.type));
+        }
+
+        return filtered;
+    }
+
+    filterItemsByDocumentTag(items) {
+        let filtered = items;
+
+        if (this.documentTagsFilter.length) {
+            filtered = filtered.filter((i) => game.documentTagger.hasTags(i, this.documentTagsFilter, { matchAll: true, ignoreCase: true }));
         }
 
         return filtered;
@@ -368,6 +390,8 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
         }
 
         filtered = this.filterItemsByType(filtered);
+
+        filtered = this.filterItemsByDocumentTag(filtered);
 
         //System specific filter
         filtered = this.systemHandler.filterItems(filtered);

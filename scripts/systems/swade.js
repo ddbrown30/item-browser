@@ -116,6 +116,7 @@ export class Swade extends BaseSystem {
     };
 
     getColumnsForType(type) {
+        if (type == CONST.allTypesId) return [];
         if (type == "ability") return [];
         if (type == "ancestry") return [];
         if (type == "armor") return ["armor", "toughness", "minStr", "locations", "price", "weight"];

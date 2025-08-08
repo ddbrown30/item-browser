@@ -97,6 +97,7 @@ export class DnD5e extends BaseSystem {
     };
 
     getColumnsForType(type) {
+        if (type == CONST.allTypesId) return [];
         if (type == "background") return [];
         if (type == "class") return [];
         if (type == "consumable") return ["toHit", "attunement", "damage", "healing", "rarity", "price", "weight"];
