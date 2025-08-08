@@ -111,8 +111,4 @@ export class Utils {
         if (!string) return string;
         return String(string).charAt(0).toUpperCase() + String(string).slice(1);
     }
-
-    static documentTaggerActive() {
-        return game.modules.get("document-tagger")?.active;
-    }
 }

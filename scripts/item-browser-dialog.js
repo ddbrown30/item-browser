@@ -132,7 +132,7 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
             additionalSearchesData: additionalSearchesData,
             headerData: headerData,
             typeFilterOptions: typeFilterOptions,
-            documentTaggerActive: Utils.documentTaggerActive,
+            documentTaggerActive: !!game.documentTagger,
             documentTagsFilter: this.documentTagsFilter,
         };
     };
