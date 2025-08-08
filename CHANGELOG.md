@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.0
+
+* Added Document Tagger support
+* Added an All option to the types filter
+
 ## 1.0.0
 
 * Fixes for v13
