@@ -198,7 +198,8 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
             this.renderSystemFilters(data);
         });
 
-        this.element.querySelector('tag-input')?.addEventListener("tagschanged", async event => {
+        const tagInput = this.element.querySelector('tag-input');
+        tagInput?.addEventListener("tagschanged", async event => {
             this.documentTagsFilter = tagInput.tagList;
             let data = await this._prepareContext();
             await this.renderItemList(data);
