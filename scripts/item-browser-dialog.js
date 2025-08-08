@@ -150,7 +150,7 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
 
     async renderItemList(data) {
         //Re-render just the item list and replace the html
-        const content = await renderTemplate(DEFAULT_CONFIG.templates.itemList, data);
+        const content = await foundry.applications.handlebars.renderTemplate(DEFAULT_CONFIG.templates.itemList, data);
         let listPanel = this.element.querySelector(".list-panel");
         let itemList = listPanel.querySelector(".item-list");
         itemList.innerHTML = content;
@@ -161,7 +161,7 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
 
     async renderSystemFilters(data) {
         //Re-render just the filters list and replace the html
-        const content = await renderTemplate(this.systemHandler.constructor.ADDITIONAL_FILTERS_TEMPLATE, data);
+        const content = await foundry.applications.handlebars.renderTemplate(this.systemHandler.constructor.ADDITIONAL_FILTERS_TEMPLATE, data);
         let filterPanel = this.element.querySelector(".filter-panel");
         let filters = filterPanel.querySelector(".system-filters");
         filters.innerHTML = content;
