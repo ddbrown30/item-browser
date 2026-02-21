@@ -16,7 +16,7 @@ If you would like to remove duplicates for certain item types, you can do so by 
 
 This will remove all duplicates, by name, leaving only the one with the highest priority. World items (items that exist only in your world and not in a compendium) are always considered to be the highest priority. Any source that is not in the priority list is considered the lowest priority and the one that remains is arbitrary.
 
-Deduplication happens after all other filter. What this means in practice is that if you filter for a specific source, you will still see the items from that source since there are no duplicates to remove.
+Deduplication happens after all other filters. What this means in practice is that if you filter for a specific source, you will always the items from that source since there are no duplicates to remove.
 
 <img src="https://github.com/ddbrown30/item-browser/blob/main/duplicates_settings.webp" width="400">
 
