@@ -1,0 +1,51 @@
+<div class='sheet-body settings-list scrollable'>
+    <div class="form-group">
+        <label>{{{localize "ITEM_BROWSER.Settings.DuplicatesSettings.Settings.RemoveDuplicatesN"}}}</label>
+        <div class="form-fields">
+            <input type="checkbox" class="remove-duplicates" data-dtype="Boolean" {{checked removeDuplicates}} />
+        </div>
+
+        <p class="hint">{{{localize "ITEM_BROWSER.Settings.DuplicatesSettings.Settings.RemoveDuplicatesH"}}}</p>
+    </div>
+
+    <div class="form-group">
+        <label>{{{localize "ITEM_BROWSER.Settings.DuplicatesSettings.Settings.TypesN"}}}</label>
+        <div class="form-fields">
+            <textarea id="types" style="resize: none;" name="types" data-dtype="String">{{types}}</textarea>
+        </div>
+
+        <p class="hint">{{{localize "ITEM_BROWSER.Settings.DuplicatesSettings.Settings.TypesH"}}}</p>
+    </div>
+
+    <div class="priority-group">
+        <label>{{{localize "ITEM_BROWSER.Settings.DuplicatesSettings.Settings.PriorityN"}}}</label>
+
+        <div class="priority-selection">
+            <select id="source" name="source" type="dropdown" placeholder="Source...">
+                {{selectOptions sources localize=true valueAttr="id" labelAttr="label"}}
+            </select>
+
+            <button data-action="addPriority">{{{localize "Add"}}}</button>
+        </div>
+
+        <fieldset>
+            <ul class="priority-list">
+                {{#each priorities}}
+                    <li class="priority-row" data-source-id="{{id}}">
+                        <div class="label-group">
+                            <span class="sort-handle" draggable="true">
+                                <i class="fas fa-grip-vertical"></i>
+                            </span>
+                            {{label}}
+                        </div>
+                        <a class="remove-button" role="button" data-action="removePriority">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </li>
+                {{/each}}
+            </ul>
+        </fieldset>
+
+        <p class="hint">{{{localize "ITEM_BROWSER.Settings.DuplicatesSettings.Settings.PriorityH"}}}</p>
+    </div>
+</div>

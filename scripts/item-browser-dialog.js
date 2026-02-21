@@ -1,4 +1,4 @@
-import { DEFAULT_CONFIG, CONST } from "./module-config.js";
+import { DEFAULT_CONFIG, CONST, SETTING_KEYS } from "./module-config.js";
 import { Utils } from "./utils.js";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
@@ -46,6 +46,8 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
         this.systemHandler = game.itemBrowser.systemHandler;
         this.systemHandler.clearFilters();
         this.systemHandler.clearSearches();
+
+        this.duplicatesSettings = Utils.getSetting(SETTING_KEYS.duplicatesSettings);
     }
 
     onDragStart(event) {
@@ -252,7 +254,7 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
                 }
 
                 //Update the select button
-                const selectButton = element.querySelector('[data-action="select"]');
+                const selectButton = this.element.querySelector('[data-action="select"]');
                 let selectButtonString = this.getSelectButtonString();
                 selectButton.textContent = selectButtonString;
                 selectButton.disabled = false;
@@ -276,6 +278,8 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
             let packIndex = await pack.getIndex({ fields: this.systemHandler.constructor.INDEX_FIELDS });
             if (packIndex.size == 0) continue;
 
+            packIndex.forEach(item => { item.packId = pack.metadata.id; });
+
             packIndex = this.filterItemsByType(packIndex);
             if (packIndex.length == 0) continue;
 
@@ -289,6 +293,7 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
             sources.push({ id: pack.metadata.id, label: label });
         }
 
+        sources = sources.sort((a, b) => a.label.localeCompare(b.label));
         return { items, sources };
     }
 
@@ -377,6 +382,46 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
         return filtered;
     }
 
+    removeDuplicates(items) {
+        if (!this.duplicatesSettings.removeDuplicates) {
+            return items;
+        }
+
+        const priorities = new Map(this.duplicatesSettings.priorities.map((p, i) => [p, i]));
+        priorities.set(ItemBrowserDialog.WORLD_ITEMS_ID, -1);
+
+        const types = this.duplicatesSettings.types.map(t => t.toLowerCase());
+
+        const filtered = new Map();
+
+        for (const item of items) {
+            if (!types.includes(item.type.toLowerCase())) {
+                //This is not one of the types we need to dedupe
+                //Add it as a unique item to the filtered map
+                filtered.set(Symbol(), item);
+                continue;
+            }
+
+            const existing = filtered.get(item.name);
+            if (!existing) {
+                filtered.set(item.name, item);
+                continue;
+            }
+
+            let currentPackId = item.documentName == "Item" ? ItemBrowserDialog.WORLD_ITEMS_ID : item.packId;
+            let existingPackId = existing.documentName == "Item" ? ItemBrowserDialog.WORLD_ITEMS_ID : existing.packId;
+
+            const currentPriority = priorities.get(currentPackId) ?? Infinity;
+            const existingPriority = priorities.get(existingPackId) ?? Infinity;
+
+            if (currentPriority < existingPriority) {
+                filtered.set(item.name, item);
+            }
+        }
+
+        return [...filtered.values()];
+    }
+
     filterItems(items) {
         let filtered = items;
 
@@ -396,6 +441,9 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
 
         //System specific filter
         filtered = this.systemHandler.filterItems(filtered);
+
+        //Removing duplicates happens last so that we will still see items if they are specifically filtered for
+        filtered = this.removeDuplicates(filtered);
 
         return filtered;
     }

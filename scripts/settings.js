@@ -1,3 +1,4 @@
+import { DuplicatesSettings } from "./duplicates-settings.js";
 import * as MODULE_CONFIG from "./module-config.js";
 import { Utils } from "./utils.js";
 
@@ -25,5 +26,21 @@ export function registerSettings() {
         onChange: s => {
             ui.items.render(true);
         }
+    });
+
+    Utils.registerMenu(MODULE_CONFIG.SETTING_KEYS.duplicatesMenu, {
+        name: "ITEM_BROWSER.Settings.DuplicatesSettings.Title",
+        label: "ITEM_BROWSER.Settings.DuplicatesSettings.Title",
+        hint: "ITEM_BROWSER.Settings.DuplicatesSettings.Hint",
+        scope: "world",
+        restricted: true,
+        type: DuplicatesSettings,
+    });
+
+    Utils.registerSetting(MODULE_CONFIG.SETTING_KEYS.duplicatesSettings, {
+        scope: "world",
+        config: false,
+        type: Object,
+        default: { enabled: false, types: [], priorities: [] }
     });
 }

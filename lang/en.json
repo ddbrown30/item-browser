@@ -81,6 +81,8 @@
     "ITEM_BROWSER.Yes": "Yes",
     "ITEM_BROWSER.No": "No",
 
+    "ITEM_BROWSER.Save": "Save",
+
     "ITEM_BROWSER.All": "All",
     "ITEM_BROWSER.None": "None",
     "ITEM_BROWSER.Unknown": "Unknown",
@@ -91,5 +93,18 @@
     "ITEM_BROWSER.Settings.ShowOnItemDirectoryH": "If enabled, a button to open the Item Browser will be added to the Items tab",
 
     "ITEM_BROWSER.Settings.UseSmallButtonN": "Use Small Button",
-    "ITEM_BROWSER.Settings.UseSmallButtonH": "If enabled, the button on the Items tab is small and placed in the same row as the search field"
+    "ITEM_BROWSER.Settings.UseSmallButtonH": "If enabled, the button on the Items tab is small and placed in the same row as the search field",
+
+    "ITEM_BROWSER.Settings.DuplicatesSettings": {
+        "Title": "Duplicates Settings",
+        "Hint": "Settings for how duplicate items are handled",
+        "Settings": {
+            "RemoveDuplicatesN": "Remove Duplicates",
+            "RemoveDuplicatesH": "If enabled, duplicates are removed from the results based on the settings below.<br>Deduplication happens after all other filtering.",
+            "TypesN": "Item Types",
+            "TypesH": "A comma-separated list of types of items that will be deduplicated. If no types are provided, no duplicates will be removed.",
+            "PriorityN": "Source Priorities",
+            "PriorityH": "This list determines which sources to prioritize when deduplicating.<br>World items are always considered to be the highest priority.<br>All other sources not listed here are considered to be the lowest priority."
+        }
+    }
 }
