@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.0
+
+* Added an optional deduplication system. This is configured in the Item Browser settings.
+
 ## 1.1.0
 
 * Added Document Tagger support
