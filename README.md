@@ -10,6 +10,16 @@ The browser will work for all systems but has specific support for swade and dnd
 
 <img src="https://github.com/ddbrown30/item-browser/blob/main/item_browser.webp" width="700">
 
+## Duplicate Removal
+
+If you would like to remove duplicates for certain item types, you can do so by configuring the options in the Duplicates Settings menu. Enable removal, enter the list of types that you want to deduplicate (these are the types as defined in the system code), add the sources you want to prioritize to the list, and you're good to go.
+
+This will remove all duplicates, by name, leaving only the one with the highest priority. World items (items that exist only in your world and not in a compendium) are always considered to be the highest priority. Any source that is not in the priority list is considered the lowest priority and the one that remains is arbitrary.
+
+Deduplication happens after all other filter. What this means in practice is that if you filter for a specific source, you will still see the items from that source since there are no duplicates to remove.
+
+<img src="https://github.com/ddbrown30/item-browser/blob/main/duplicates_settings.webp" width="400">
+
 ## API Use
 
 The browser is also exposed to the API allowing module makers to leverage it to allow the user to select items.
