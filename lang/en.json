@@ -95,6 +95,12 @@
     "ITEM_BROWSER.Settings.UseSmallButtonN": "Use Small Button",
     "ITEM_BROWSER.Settings.UseSmallButtonH": "If enabled, the button on the Items tab is small and placed in the same row as the search field",
 
+    "ITEM_BROWSER.Settings.UseProgressiveRenderingN": "Use Progressive Rendering",
+    "ITEM_BROWSER.Settings.UseProgressiveRenderingH": "If enabled, the table is rendered over time to make the browser more responsive when there are thousands of rows",
+
+    "ITEM_BROWSER.Settings.ProgressiveRenderSizeN": "Progressive Render Size",
+    "ITEM_BROWSER.Settings.ProgressiveRenderSizeH": "The number of rows to render each pass. If you have slow hardware or are finding the browser to be unresponsive, set this to a lower value.",
+
     "ITEM_BROWSER.Settings.DuplicatesSettings": {
         "Title": "Duplicates Settings",
         "Hint": "Settings for how duplicate items are handled",

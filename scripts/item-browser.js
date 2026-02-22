@@ -34,11 +34,17 @@ export class ItemBrowser {
         //Respond to the open button
         const button = html.querySelector(".open-item-browser-button");
         button.addEventListener("click", ev => {
-            new ItemBrowserDialog().render(true);
+            ItemBrowser.openBrowser({ selector: false });
         });
     }
 
     static async openBrowser(options={}) {
+        const itemBrowserDialog = foundry.applications.instances.get(ItemBrowserDialog.DEFAULT_OPTIONS.id);
+        if (itemBrowserDialog) {
+            itemBrowserDialog.bringToFront();
+            return;
+        }
+
         options.selector = options.selector ?? true;
         if (options.selector) {
             return await new ItemBrowserDialog(options).wait();

@@ -57,8 +57,12 @@ export class Utils {
      * Loads templates for partials
      */
     static async loadTemplates() {
-        let listPartial = await foundry.applications.handlebars.loadTemplates([MODULE_CONFIG.DEFAULT_CONFIG.templates.itemList]);
+        let listPartial = await foundry.applications.handlebars.loadTemplates([
+            MODULE_CONFIG.DEFAULT_CONFIG.templates.itemList,
+            MODULE_CONFIG.DEFAULT_CONFIG.templates.itemRows
+        ]);
         Handlebars.registerPartial("itemBrowserListPartial", listPartial[0]);
+        Handlebars.registerPartial("itemBrowserListRowsPartial", listPartial[1]);
 
         let filtersTemplate = game.itemBrowser.systemHandler.constructor.ADDITIONAL_FILTERS_TEMPLATE;
         if (filtersTemplate) {

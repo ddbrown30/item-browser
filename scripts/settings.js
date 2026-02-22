@@ -28,6 +28,24 @@ export function registerSettings() {
         }
     });
 
+    Utils.registerSetting(MODULE_CONFIG.SETTING_KEYS.useProgressiveRendering, {
+        name: "ITEM_BROWSER.Settings.UseProgressiveRenderingN",
+        hint: "ITEM_BROWSER.Settings.UseProgressiveRenderingH",
+        scope: "client",
+        config: true,
+        type: Boolean,
+        default: true,
+    });
+
+    Utils.registerSetting(MODULE_CONFIG.SETTING_KEYS.progressiveRenderSize, {
+        name: "ITEM_BROWSER.Settings.ProgressiveRenderSizeN",
+        hint: "ITEM_BROWSER.Settings.ProgressiveRenderSizeH",
+        scope: "client",
+        config: true,
+        type: Number,
+        default: MODULE_CONFIG.DEFAULT_CONFIG.progressiveRenderSize,
+    });
+
     Utils.registerMenu(MODULE_CONFIG.SETTING_KEYS.duplicatesMenu, {
         name: "ITEM_BROWSER.Settings.DuplicatesSettings.Title",
         label: "ITEM_BROWSER.Settings.DuplicatesSettings.Title",

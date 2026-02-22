@@ -48,6 +48,9 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
         this.systemHandler.clearSearches();
 
         this.duplicatesSettings = Utils.getSetting(SETTING_KEYS.duplicatesSettings);
+
+        this.useProgressiveRendering = Utils.getSetting(SETTING_KEYS.useProgressiveRendering);
+        this.progressiveRenderSize = Utils.getSetting(SETTING_KEYS.progressiveRenderSize);
     }
 
     onDragStart(event) {
@@ -62,6 +65,9 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
     }
 
     async _prepareContext(_options) {
+        clearTimeout(this.listPopulator);
+        this.listPopulator = undefined;
+
         let items = [];
         let sources = [];
 
@@ -122,12 +128,20 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
 
         let selectButtonString = this.getSelectButtonString();
 
+        let rowSubset = this.rowData;
+        if (this.useProgressiveRendering) {
+            rowSubset = this.rowData.slice(0, this.progressiveRenderSize);
+            if (rowSubset.length < this.rowData.length) {
+                this.progressiveTableRender();
+            }
+        }
+
         return {
             sources: sources,
             sourceFilter: this.sourceFilter,
             typeFilter: this.typeFilter,
             searchName: this.searchName,
-            items: this.rowData,
+            items: rowSubset,
             selectedItem: this.selectedItem,
             selectButtonString: selectButtonString,
             additionalFiltersData: additionalFiltersData,
@@ -138,6 +152,44 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
             documentTagsFilter: this.documentTagsFilter,
         };
     };
+
+    progressiveTableRender() {
+        this.renderGenerationId = (this.renderGenerationId ?? 0) + 1;
+        const generationId = this.renderGenerationId;
+
+        let currentSection = this.progressiveRenderSize;
+        async function renderSection() {
+            this.listPopulator = undefined;
+            if (!this.element) {
+                if (this.state >= ApplicationV2.RENDER_STATES.NONE) {
+                    this.listPopulator = setTimeout(renderSection, 1000);
+                }
+                return;
+            }
+
+            const nextSubset = this.rowData.slice(currentSection, currentSection + this.progressiveRenderSize);
+            currentSection += this.progressiveRenderSize;
+
+            const content = await foundry.applications.handlebars.renderTemplate(DEFAULT_CONFIG.templates.itemRows, { items: nextSubset });
+            if (generationId !== this.renderGenerationId) return;
+
+            let listPanel = this.element.querySelector(".list-panel");
+            let itemList = listPanel.querySelector(".item-list");
+
+            const template = document.createElement('template');
+            template.innerHTML = content;
+
+            this.activateTableListeners(template.content);
+
+            itemList.appendChild(template.content);
+
+            if (currentSection < this.rowData.length) {
+                this.listPopulator = setTimeout(renderSection, 0);
+            }
+        }
+        renderSection = renderSection.bind(this);
+        this.listPopulator = setTimeout(renderSection, 0);
+    }
 
     /**
    * Actions performed after any render of the Application.
@@ -175,7 +227,7 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
     activateListeners() {
         //Add a keyup listener on the search name input so that we can filter as we type
         const searchNameSelector = this.element.querySelector('input.search-name');
-        searchNameSelector.addEventListener("keyup", async event => {
+        searchNameSelector.addEventListener("input", async event => {
             this.searchName = event.target.value;
             let data = await this._prepareContext();
             this.renderItemList(data);
@@ -265,7 +317,7 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
             });
         }
 
-        this.dragDrop.bind(this.element);
+        this.dragDrop.bind(element);
     }
 
     async getPackItems() {
@@ -514,6 +566,15 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
 
             this.render({ force: true });
         });
+    }
+
+    async close(options) {
+        if (this.listPopulator) {
+            clearTimeout(this.listPopulator);
+            this.listPopulator = null;
+        }
+
+        return super.close(options);
     }
 
     async select() {
