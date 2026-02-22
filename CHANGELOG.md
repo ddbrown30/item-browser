@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.0
+
+* Added progressive rendering which renders batches of rows over time rather than the entire table all at once. This improves responsiveness in tables with thousands of items. This is enabled by default but can be disabled from the settings. The render size can also be adjusted from the settings.
+
 ## 1.2.0
 
 * Added an optional deduplication system. This is configured in the Item Browser settings.
