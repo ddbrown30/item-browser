@@ -260,7 +260,7 @@ export class Swade extends BaseSystem {
             let sortValue = ranks.indexOf(system.rank.toLowerCase());
             sortValue = sortValue < 0 ? Number.MAX_SAFE_INTEGER : sortValue;
             data.rank = { display: system.rank, sortValue: sortValue };
-        } else if (system.requirements) {
+        } else if (Array.isArray(system.requirements)) {
             let rank = system.requirements.find((r) => r.type == "rank");
             if (rank) {
                 if (typeof rank.value == "number") {
