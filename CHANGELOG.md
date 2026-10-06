@@ -3,6 +3,7 @@
 ## 1.3.2
 
 * Right clicking a row now opens the item sheet
+* Fixed a bug with dedupe
 
 ## 1.3.1
 
