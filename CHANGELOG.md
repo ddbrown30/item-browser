@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.1
+
+* Fixed Rank Column in swade
+* When opening with a single type filter, select that as the default filter
+* Fixed the dedupe logic removing items with the same name but different types
+
 ## 1.3.0
 
 * Added progressive rendering which renders batches of rows over time rather than the entire table all at once. This improves responsiveness in tables with thousands of items. This is enabled by default but can be disabled from the settings. The render size can also be adjusted from the settings.
