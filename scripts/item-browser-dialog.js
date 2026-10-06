@@ -315,6 +315,11 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
             row.addEventListener("dblclick", async event => {
                 this.select();
             });
+
+            row.addEventListener("contextmenu", async event => {
+                const item = await fromUuid(row.dataset.itemId);
+                item.sheet.render(true);
+            });
         }
 
         this.dragDrop.bind(element);
