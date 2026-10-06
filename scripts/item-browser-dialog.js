@@ -477,7 +477,7 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
             const existingPriority = priorities.get(existingPackId) ?? Infinity;
 
             if (currentPriority < existingPriority) {
-                filtered.set(item.name, item);
+                filtered.set(key, item);
             }
         }
 
