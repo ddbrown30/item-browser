@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.2
+
+* Right clicking a row now opens the item sheet
+
 ## 1.3.1
 
 * Fixed Rank Column in swade
