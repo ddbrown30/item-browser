@@ -386,6 +386,10 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
             itemTypes.unshift({ id: CONST.allTypesId, label: game.i18n.localize(`ITEM_BROWSER.TypeFilters.AllItems`) });
         }
 
+        if (!this.typeFilter && this.options.itemTypes?.length === 1 && itemTypes.some((i) => i.id === this.options.itemTypes[0])) {
+            this.typeFilter = this.options.itemTypes[0];
+        }
+
         this.typeFilter = this.typeFilter ?? CONST.allTypesId;
         this.typeFilterOptions = itemTypes;
         return this.typeFilterOptions;
