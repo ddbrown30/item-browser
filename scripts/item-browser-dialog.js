@@ -458,9 +458,10 @@ export class ItemBrowserDialog extends HandlebarsApplicationMixin(ApplicationV2)
                 continue;
             }
 
-            const existing = filtered.get(item.name);
+            const key = JSON.stringify([item.type, item.name]);
+            const existing = filtered.get(key);
             if (!existing) {
-                filtered.set(item.name, item);
+                filtered.set(key, item);
                 continue;
             }
 
